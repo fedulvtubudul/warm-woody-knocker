@@ -8,6 +8,7 @@
 #define ENCODER_BUTTON_INPUT 12
 
 #define LED_OUTPUT LED_BUILTIN
+#define LCD_LINE_WIDTH 16
 #define ONBEAT_OUTPUT 8
 #define OFFBEAT_OUTPUT 9
 
@@ -113,7 +114,7 @@ void setup() {
 
   refreshBeepIntervals();
 
-  lcd.begin(12, 2);
+  lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
 
   pinMode(ENCODER_A_INPUT, INPUT_PULLUP);
   pinMode(ENCODER_B_INPUT, INPUT_PULLUP);
@@ -236,7 +237,7 @@ inline void printMode(void) {
 }
 
 void printValue() {
-  lcd.setCursor(11 - 4, 1);
+  lcd.setCursor(LCD_LINE_WIDTH-1 - 4, 1);
   lcd.print("    ");
   
   switch (editMode) {
@@ -263,12 +264,12 @@ inline void printTempoValue() {
     valueDiv /= 10;
   }
   
-  lcd.setCursor(11 - printOffset, 1);
+  lcd.setCursor(LCD_LINE_WIDTH-1 - printOffset, 1);
   lcd.print(tempo);
 }
 
 inline void printSubdivValue(void) {
-  lcd.setCursor(11 - 3, 1);
+  lcd.setCursor(LCD_LINE_WIDTH-1 - 3, 1);
   
   switch (subdivMode) {
       case subdivMode1to4: {
@@ -287,7 +288,7 @@ inline void printSubdivValue(void) {
 }
 
 inline void printAccentValue(void) {
-  lcd.setCursor(11 - 3, 1);
+  lcd.setCursor(LCD_LINE_WIDTH-1 - 3, 1);
   
   switch (accentMode) {
       case accentModeClave32: {
@@ -306,7 +307,7 @@ inline void printAccentValue(void) {
             valueDiv /= 10;
           }
           
-          lcd.setCursor(11 - printOffset, 1);
+          lcd.setCursor(LCD_LINE_WIDTH-1 - printOffset, 1);
           lcd.print(accentMode);
           break;
         }
