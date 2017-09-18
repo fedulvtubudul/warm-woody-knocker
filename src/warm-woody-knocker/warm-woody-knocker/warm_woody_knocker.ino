@@ -9,6 +9,7 @@
 
 #define LED_OUTPUT LED_BUILTIN
 #define LCD_LINE_WIDTH 16
+#define LCD_LINES_COUNT 2
 #define ONBEAT_OUTPUT 8
 #define OFFBEAT_OUTPUT 9
 
@@ -31,6 +32,7 @@ unsigned int subdivCount = 0;
 // These values are in microseconds.
 unsigned long lastOnbeatBeep = 0;
 unsigned long lastOffbeatBeep = 0;
+unsigned long measureStart = 0;
 unsigned long onbeatBeepInterval = BPM_TO_MICRO / tempo;
 unsigned long offbeatBeepInterval = BPM_TO_MICRO / tempo;
 unsigned long onbeatBeepLength= 2000lu;
@@ -88,6 +90,9 @@ int accentMode = accentMode4;
 void refreshBeepIntervals(void);
 void beepIfNeeded(void);
 
+uint8_t positionForPendulumState(uint8_t state);
+void movePendulumIfNeeded(void);
+
 int subdivMultiplier(void);
 int accentedBeatMultiplier(void);
 
@@ -106,7 +111,8 @@ void printValue(void);
 void printTempoValue(void);
 void printSubdivValue(void);
 void printAccentValue(void);
-
+void clearPendulum(uint8_t prevPosition, uint8_t newPosition);
+void printPendulum(uint8_t prevPosition, uint8_t newPosition);
 
 
 void setup() {
@@ -126,8 +132,83 @@ void setup() {
 
 void loop() {
   beepIfNeeded();
+  movePendulumIfNeeded();
+	
   handleInputEvents();
   printChanges();
+}
+
+#define PENDULUM_LINE 0
+#define PENDULUM_WIDTH 4
+uint8_t pendulumPosition = PENDULUM_WIDTH;
+uint8_t const pendulumPositions = LCD_LINE_WIDTH - (PENDULUM_WIDTH - 1);
+uint8_t const pendulumStates = pendulumPositions * 2 - 2;
+
+void movePendulumIfNeeded() {
+  unsigned long currentTime = micros();
+  unsigned long measureTime = currentTime - measureStart;
+  unsigned long measureLength = BPM_TO_MICRO / tempo;
+
+  unsigned long pendulumMoveInterval = 2 * measureLength / pendulumStates;
+	
+  uint8_t neededState = measureTime / pendulumMoveInterval;
+  uint8_t neededPosition = positionForPendulumState(neededState);
+	
+  if (pendulumPosition != neededPosition) {
+    clearPendulum(pendulumPosition, neededPosition);
+	printPendulum(pendulumPosition, neededPosition);
+	pendulumPosition = neededPosition;
+  }
+}
+
+uint8_t positionForPendulumState(uint8_t state) {
+  state = state % pendulumStates;
+  bool reverse = state >= pendulumPositions;
+	
+  uint8_t position;
+  if (reverse) {
+    position = pendulumStates - state;
+  } else {
+    position = state;
+  }
+	
+  return position;
+}
+
+void clearPendulum(uint8_t prevPosition, uint8_t newPosition) {
+  // -->
+  if (prevPosition < newPosition) {
+	  lcd.setCursor(prevPosition, PENDULUM_LINE);
+	  for (uint8_t i = prevPosition; i < newPosition; ++i) {
+	    lcd.print((char)32);
+	  }
+  }
+	
+  // <--
+  else if (prevPosition > newPosition) {
+	  lcd.setCursor(newPosition + PENDULUM_WIDTH, PENDULUM_LINE);
+	  for (uint8_t i = newPosition; i < prevPosition; ++i) {
+	    lcd.print((char)32);
+	  }
+  }
+}
+
+void printPendulum(uint8_t prevPosition, uint8_t newPosition) {
+  // -->
+  if (prevPosition < newPosition) {
+	  lcd.setCursor(prevPosition + PENDULUM_WIDTH, PENDULUM_LINE);
+	  for (uint8_t i = prevPosition; i < newPosition; ++i) {
+	    lcd.print((char)255);
+	  }
+  }
+	
+  // <--
+  else if (prevPosition > newPosition) {
+	  lcd.setCursor(newPosition, PENDULUM_LINE);
+	  for (uint8_t i = newPosition; i < prevPosition; ++i) {
+	    lcd.print((char)255);
+	  }
+  }
 }
 
 inline void beepIfNeeded() {
@@ -171,6 +252,10 @@ inline void beepIfNeeded() {
       else {
         beatCount += 1;
         beatCount %= accentedBeats;
+		
+		if (beatCount == 0) {
+			measureStart = currentTime;
+		}
       }
     }
 
@@ -179,12 +264,6 @@ inline void beepIfNeeded() {
       digitalWrite(OFFBEAT_OUTPUT, HIGH);
       offbeatBeepState = true;
     }
-
-    lcd.setCursor(0, 0);
-    lcd.print(beatCount);
-    lcd.print(" / ");
-    lcd.print(subdivCount);
-    
   }
   
   if (onbeatBeepState && (currentTime - lastOnbeatBeep >= onbeatBeepLength)) {
