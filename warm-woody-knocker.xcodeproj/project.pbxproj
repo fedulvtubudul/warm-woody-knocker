@@ -1097,7 +1097,7 @@
 		FFA566FE1F652DDD00986875 /* TemplateIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TemplateIcon.icns; path = Utilities/TemplateIcon.icns; sourceTree = "<group>"; };
 		FFA566FF1F652DDD00986875 /* warm_woody_knocker.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = warm_woody_knocker.ino; sourceTree = "<group>"; };
 		FFB40C251FF77BF7008857A0 /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
-		FFB40C261FF77BF7008857A0 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		FFB40C261FF77BF7008857A0 /* Button.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Button.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2790,7 +2790,7 @@
 		FFB40C241FF77B78008857A0 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				FFB40C261FF77BF7008857A0 /* Button.h */,
+				FFB40C261FF77BF7008857A0 /* Button.hpp */,
 				FFB40C251FF77BF7008857A0 /* Button.cpp */,
 			);
 			path = Source;

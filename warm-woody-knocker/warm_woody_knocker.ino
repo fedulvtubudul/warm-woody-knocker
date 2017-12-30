@@ -1,5 +1,7 @@
 #include "Arduino.h"
 #include <LiquidCrystal.h>
+#include "Button.h"
+
 //#include <U8g2lib.h>
 //
 //#define U8X8_HAVE_HW_I2C
@@ -19,6 +21,11 @@
 #define OFFBEAT_OUTPUT 9
 
 #define DEBOUNCE_LOOPS 12
+Button *button;
+uint32_t const buttonClickThreshold = 40;
+uint32_t const buttonHoldThreshold = 2000;
+
+
 long const volumeValueMultiplier = 100;
 
 float const onbeatVolumeValueMultiplier = 1.5f;
@@ -39,6 +46,7 @@ LiquidCrystal lcd(7, 6, 5, 4, 3, 2);
 unsigned int tempo = 120;
 unsigned int beatCount = 0;
 unsigned int subdivCount = 0;
+boolean running = true;
 
 // These values are in microseconds.
 unsigned long lastOnbeatBeep = 0;
@@ -55,8 +63,9 @@ unsigned long onbeatBeepLength;
 unsigned long offbeatBeepLength;
 unsigned long subdivBeepLength;
 
-bool modeChanged = true;
-bool valueChanged = true;
+boolean modeChanged = true;
+boolean valueChanged = true;
+boolean runningChanged = true;
 
 enum EditValueMode {
     editValueModeTempo,
@@ -118,9 +127,9 @@ int subdivMultiplier(void);
 int accentedBeatMultiplier(void);
 
 void handleInputEvents(void);
-void handleEncoderTap(void);
 void handleEncoderRotation(void);
-void encoderTapAction(void);
+void encoderClickAction(void);
+void encoderHoldAction(void);
 void encoderSpinAction(const int valueDelta);
 void deltaTempoValue(const int valueDelta);
 void deltaSubdivValue (const int valueDelta);
@@ -172,10 +181,14 @@ void setup() {
 
   pinMode(ENCODER_A_INPUT, INPUT_PULLUP);
   pinMode(ENCODER_B_INPUT, INPUT_PULLUP);
-  pinMode(ENCODER_BUTTON_INPUT, INPUT_PULLUP);
+
+	button = new Button(ENCODER_BUTTON_INPUT, buttonClickThreshold, &encoderClickAction, buttonHoldThreshold, &encoderHoldAction);
+
   pinMode(LED_OUTPUT, OUTPUT);
   pinMode(ONBEAT_OUTPUT, OUTPUT);
   pinMode(OFFBEAT_OUTPUT, OUTPUT);
+	
+	
 }
 
 void drawValue() {
@@ -208,7 +221,10 @@ void loop() {
 
   beepIfNeeded();
   movePendulumIfNeeded();
-  handleInputEvents();
+//  handleInputEvents();
+
+	button->check();
+
   printChanges();
 }
 
@@ -570,24 +586,7 @@ inline void printAccentValue(void) {
 }
 
 inline void handleInputEvents(void) {
-  handleEncoderTap();
   handleEncoderRotation();
-}
-
-inline void handleEncoderTap(void) {
-  static signed char prevInputState = 0;
-
-  bool const inputState = !digitalRead(ENCODER_BUTTON_INPUT);
-
-  if (inputState) {
-    if (!prevInputState) {
-      encoderTapAction();
-    }
-    prevInputState = DEBOUNCE_LOOPS;
-  }
-  else if (prevInputState > 0) {
-    --prevInputState;
-  }
 }
 
 inline void handleEncoderRotation(void) {
@@ -652,9 +651,14 @@ inline void handleEncoderRotation(void) {
   encoderLastStateB = encoderStateB;
 }
 
-void encoderTapAction(void) {
+void encoderClickAction(void) {
   ++editMode %= editValueModeMaxValue;
   modeChanged = true;
+}
+
+void encoderHoldAction(void) {
+	running = !running;
+	runningChanged = true;
 }
 
 void encoderSpinAction(const int valueDelta) {

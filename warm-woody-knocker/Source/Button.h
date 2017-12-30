@@ -1,5 +1,6 @@
-#ifndef __BUTTON_H
-#define __BUTTON_H
+#ifndef Button_hpp
+#define Button_hpp
+#include <Arduino.h>
 
 
 typedef enum {
@@ -22,13 +23,15 @@ public:
 private:
 
 	uint8_t pin;
+	
 	uint32_t clickThreshold;
 	void (*clickHandler)(void);
+	
 	uint32_t holdThreshold;
 	void (*holdHandler)(void);
+	
 	ButtonState state;
-	uint32_t buttonPressedLoops;
-
+	uint32_t pressStarted;
 
 	void checkPressed();
 	void checkReleased();
