@@ -496,6 +496,7 @@
 		FF5E581C1FDBC4DF009D3C7C /* u8x8_u8toa.c in Sources */ = {isa = PBXBuildFile; fileRef = FF5E57D01FDBC4DF009D3C7C /* u8x8_u8toa.c */; };
 		FF5E581D1FDBC4DF009D3C7C /* U8x8lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FF5E57D21FDBC4DF009D3C7C /* U8x8lib.cpp */; };
 		FFA566B51F652DDD00986875 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFA566B41F652DDD00986875 /* main.cpp */; };
+		FFB40C271FF77BF7008857A0 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFB40C251FF77BF7008857A0 /* Button.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1095,6 +1096,8 @@
 		FFA566FD1F652DDD00986875 /* embedXcode_chrono */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; name = embedXcode_chrono; path = Utilities/embedXcode_chrono; sourceTree = "<group>"; };
 		FFA566FE1F652DDD00986875 /* TemplateIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TemplateIcon.icns; path = Utilities/TemplateIcon.icns; sourceTree = "<group>"; };
 		FFA566FF1F652DDD00986875 /* warm_woody_knocker.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = warm_woody_knocker.ino; sourceTree = "<group>"; };
+		FFB40C251FF77BF7008857A0 /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
+		FFB40C261FF77BF7008857A0 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2676,6 +2679,7 @@
 		FFA566B31F652DDD00986875 /* warm-woody-knocker */ = {
 			isa = PBXGroup;
 			children = (
+				FFB40C241FF77B78008857A0 /* Source */,
 				FFA566B41F652DDD00986875 /* main.cpp */,
 				FFA566B61F652DDD00986875 /* Makefile */,
 				FFA566B81F652DDD00986875 /* ReadMe.txt */,
@@ -2781,6 +2785,15 @@
 				FFA566FE1F652DDD00986875 /* TemplateIcon.icns */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		FFB40C241FF77B78008857A0 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				FFB40C261FF77BF7008857A0 /* Button.h */,
+				FFB40C251FF77BF7008857A0 /* Button.cpp */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -3401,6 +3414,7 @@
 				AA2A170910153250AA0001DC /* conf_at45dbx.h in Sources */,
 				AA2A170910153250AA0001DE /* flash_fw.c in Sources */,
 				AA2A170910153250AA0001DF /* nor_flash.c in Sources */,
+				FFB40C271FF77BF7008857A0 /* Button.cpp in Sources */,
 				AA2A170910153250AA0001E0 /* nor_flash.h in Sources */,
 				AA2A170910153250AA0001E1 /* printf-stdarg.c in Sources */,
 				FF5E57ED1FDBC4DF009D3C7C /* u8x8_d_ks0108.c in Sources */,
