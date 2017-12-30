@@ -497,6 +497,7 @@
 		FF5E581D1FDBC4DF009D3C7C /* U8x8lib.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FF5E57D21FDBC4DF009D3C7C /* U8x8lib.cpp */; };
 		FFA566B51F652DDD00986875 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFA566B41F652DDD00986875 /* main.cpp */; };
 		FFB40C271FF77BF7008857A0 /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFB40C251FF77BF7008857A0 /* Button.cpp */; };
+		FFB40C2A1FF7F70F008857A0 /* Encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFB40C281FF7F70F008857A0 /* Encoder.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -1097,7 +1098,9 @@
 		FFA566FE1F652DDD00986875 /* TemplateIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = TemplateIcon.icns; path = Utilities/TemplateIcon.icns; sourceTree = "<group>"; };
 		FFA566FF1F652DDD00986875 /* warm_woody_knocker.ino */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = warm_woody_knocker.ino; sourceTree = "<group>"; };
 		FFB40C251FF77BF7008857A0 /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
-		FFB40C261FF77BF7008857A0 /* Button.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Button.hpp; sourceTree = "<group>"; };
+		FFB40C261FF77BF7008857A0 /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
+		FFB40C281FF7F70F008857A0 /* Encoder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Encoder.cpp; sourceTree = "<group>"; };
+		FFB40C291FF7F70F008857A0 /* Encoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Encoder.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -2790,8 +2793,10 @@
 		FFB40C241FF77B78008857A0 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				FFB40C261FF77BF7008857A0 /* Button.hpp */,
+				FFB40C261FF77BF7008857A0 /* Button.h */,
 				FFB40C251FF77BF7008857A0 /* Button.cpp */,
+				FFB40C291FF7F70F008857A0 /* Encoder.h */,
+				FFB40C281FF7F70F008857A0 /* Encoder.cpp */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -3031,6 +3036,7 @@
 				AA2A170910153250AA000062 /* Bridge.h in Sources */,
 				AA2A170910153250AA000063 /* BridgeClient.cpp in Sources */,
 				AA2A170910153250AA000064 /* BridgeClient.h in Sources */,
+				FFB40C2A1FF7F70F008857A0 /* Encoder.cpp in Sources */,
 				AA2A170910153250AA000065 /* BridgeServer.cpp in Sources */,
 				AA2A170910153250AA000066 /* BridgeServer.h in Sources */,
 				AA2A170910153250AA000067 /* BridgeSSLClient.cpp in Sources */,

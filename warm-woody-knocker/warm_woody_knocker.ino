@@ -1,6 +1,7 @@
 #include "Arduino.h"
 #include <LiquidCrystal.h>
 #include "Button.h"
+#include "Encoder.h"
 
 //#include <U8g2lib.h>
 //
@@ -10,18 +11,19 @@
 //#endif
 
 
-#define ENCODER_A_INPUT 10
-#define ENCODER_B_INPUT 11
-#define ENCODER_BUTTON_INPUT 12
-
 #define LED_OUTPUT LED_BUILTIN
 #define LCD_LINE_WIDTH 16
 #define LCD_LINES_COUNT 2
 #define ONBEAT_OUTPUT 8
 #define OFFBEAT_OUTPUT 9
 
-#define DEBOUNCE_LOOPS 12
+
+Encoder *encoder;
 Button *button;
+uint8_t const encoderPinA = 10;
+uint8_t const encoderPinB = 11;
+uint8_t const buttonPin = 12;
+uint32_t const spinThreshold = 5;
 uint32_t const buttonClickThreshold = 40;
 uint32_t const buttonHoldThreshold = 2000;
 
@@ -126,10 +128,10 @@ void movePendulumIfNeeded(void);
 int subdivMultiplier(void);
 int accentedBeatMultiplier(void);
 
-void handleInputEvents(void);
-void handleEncoderRotation(void);
-void encoderClickAction(void);
-void encoderHoldAction(void);
+void buttonClickAction(void);
+void buttonHoldAction(void);
+void encoderSpinAction(SpinDirection direction);
+
 void encoderSpinAction(const int valueDelta);
 void deltaTempoValue(const int valueDelta);
 void deltaSubdivValue (const int valueDelta);
@@ -179,10 +181,8 @@ void setup() {
 
   lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
 
-  pinMode(ENCODER_A_INPUT, INPUT_PULLUP);
-  pinMode(ENCODER_B_INPUT, INPUT_PULLUP);
-
-	button = new Button(ENCODER_BUTTON_INPUT, buttonClickThreshold, &encoderClickAction, buttonHoldThreshold, &encoderHoldAction);
+	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
+	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
 
   pinMode(LED_OUTPUT, OUTPUT);
   pinMode(ONBEAT_OUTPUT, OUTPUT);
@@ -221,9 +221,9 @@ void loop() {
 
   beepIfNeeded();
   movePendulumIfNeeded();
-//  handleInputEvents();
 
 	button->check();
+	encoder->check();
 
   printChanges();
 }
@@ -585,83 +585,19 @@ inline void printAccentValue(void) {
     }
 }
 
-inline void handleInputEvents(void) {
-  handleEncoderRotation();
-}
-
-inline void handleEncoderRotation(void) {
-  static bool initialStateRead = false;
-  static bool encoderLastStateA = HIGH;
-  static bool encoderLastStateB = HIGH;
-	
-  if (!initialStateRead) {
-	  encoderLastStateA = digitalRead(ENCODER_A_INPUT);
-	  encoderLastStateB = digitalRead(ENCODER_B_INPUT);
-	  initialStateRead = true;
-  }
-	
-  bool const encoderStateA = digitalRead(ENCODER_A_INPUT);
-  bool const encoderStateB = digitalRead(ENCODER_B_INPUT);
-
-  static int sameStateCount = 0;
-
-	if ((encoderStateA != encoderLastStateA) ||
-	    (encoderStateB != encoderLastStateB)) {
-		
-	  bool steadyState = sameStateCount > DEBOUNCE_LOOPS;
-
-//      Serial.print(sameStateCount);
-//      Serial.print("\n\r");
-      sameStateCount = 0;
-		
-      if (!steadyState) {
-		 encoderLastStateA = encoderStateA;
-		 encoderLastStateB = encoderStateB;
-	     return;
-	  }
-	
-      if (encoderLastStateA == encoderLastStateB) {
-	    if (encoderLastStateB == encoderStateB) {
-		  encoderSpinAction(1);
-		} else {
-		  encoderSpinAction(-1);
-		}
-	  }
-
-//	  if (encoderStateA) {
-//		Serial.print("1");
-//	  } else {
-//		Serial.print("0");
-//	  }
-//
-//	  if (encoderStateB) {
-//		Serial.print("1\n\r");
-//	  } else {
-//		Serial.print("0\n\r");
-//	  }
-	} else {
-	  sameStateCount++;
-	}
-
-//  if (encoderStateA && !encoderLastStateA) {
-//    encoderSpinAction(encoderStateB ? -1 : 1);
-//  }
-
-  encoderLastStateA = encoderStateA;
-  encoderLastStateB = encoderStateB;
-}
-
-void encoderClickAction(void) {
+void buttonClickAction(void) {
   ++editMode %= editValueModeMaxValue;
   modeChanged = true;
 }
 
-void encoderHoldAction(void) {
+void buttonHoldAction(void) {
 	running = !running;
 	runningChanged = true;
 }
 
-void encoderSpinAction(const int valueDelta) {
+void encoderSpinAction(SpinDirection direction) {
+  int valueDelta = direction == spinDirectionCW ? 1 : -1;
+
   switch (editMode) {
       case editValueModeTempo: {
           deltaTempoValue(valueDelta);
