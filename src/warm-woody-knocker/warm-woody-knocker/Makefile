@@ -22,10 +22,13 @@
 # default = 0 = none
 #
 APP_LIBS_LIST = LiquidCrystal
+#APP_LIBS_LIST = LiquidCrystal Wire SPI
+
 
 # List user's libraries here 
 # default = 0 = none
 #
+#USER_LIBS_LIST = U8g2
 USER_LIBS_LIST = 0
 
 # List core, application and user's libraries to be excluded
@@ -48,7 +51,8 @@ USER_LIBS_LIST = 0
 # BOARD_PORT is optional
 # If not defined, BOARD_PORT = /dev/tty.usb* (default)
 #
-#BOARD_PORT = /dev/tty.usbmodem*
+# BOARD_PORT = /dev/cu.wchusbserial*
+BOARD_PORT = /dev/cu.usbserial*
 
 # Xcode takes SKETCHBOOK_DIR from preferences.txt
 # If not defined, each IDE has its own SKETCHBOOK_DIR (default)

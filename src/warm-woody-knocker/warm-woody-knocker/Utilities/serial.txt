@@ -1,1 +1,1 @@
-/dev/tty.usbserial-A900XS4S
+/dev/cu.usbserial-A900XS4S
