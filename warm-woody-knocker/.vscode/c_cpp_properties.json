@@ -1,0 +1,47 @@
+{
+    "configurations": [
+        {
+            "name": "arduino",
+            "includePath": [
+                "${workspaceRoot}",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/EEPROM/",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SPI/",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SoftwareSerial/",
+                "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/Wire/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/avr/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/compat/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/util/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include/",
+                "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include-fixed/",
+                "/Applications/Arduino.app/Contents/Java/libraries/LiquidCrystal/src"
+            ],
+            "browse.path": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "${workspaceRoot}/**",
+                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
+                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/EEPROM/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SPI/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SoftwareSerial/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/Wire/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/avr/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/compat/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/util/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include/",
+                    "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include-fixed/",
+                    "/Applications/Arduino.app/Contents/Java/libraries/LiquidCrystal/src"
+                ]
+            },
+            "C_Cpp.intelliSenseEngine": "Tag Parser",
+            "XXX_macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ],
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 3
+}

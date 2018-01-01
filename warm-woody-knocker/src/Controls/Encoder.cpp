@@ -1,5 +1,4 @@
 #include "Encoder.h"
-#include <Arduino.h>
 
 
 Encoder::Encoder(uint8_t pinA, uint8_t pinB, uint32_t debounceThreshold, void (*spinHandler)(SpinDirection direction)) {

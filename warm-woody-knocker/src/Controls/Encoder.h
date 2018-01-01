@@ -1,5 +1,5 @@
-#ifndef Encoder_hpp
-#define Encoder_hpp
+#ifndef Encoder_h
+#define Encoder_h
 #include <Arduino.h>
 
 

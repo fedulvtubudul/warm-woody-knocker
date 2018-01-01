@@ -1,0 +1,7 @@
+{
+    "port": "/dev/cu.usbserial-A900XS4S",
+    "board": "arduino:avr:diecimila",
+    "configuration": "cpu=atmega328",
+    "sketch": "warm_woody_knocker.ino",
+    "output": "../build"
+}

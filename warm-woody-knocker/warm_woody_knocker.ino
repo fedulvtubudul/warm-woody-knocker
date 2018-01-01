@@ -1,7 +1,7 @@
 #include "Arduino.h"
 #include <LiquidCrystal.h>
-#include "Button.h"
-#include "Encoder.h"
+#include "src/Controls/Button.h"
+#include "src/Controls/Encoder.h"
 
 //#include <U8g2lib.h>
 //
