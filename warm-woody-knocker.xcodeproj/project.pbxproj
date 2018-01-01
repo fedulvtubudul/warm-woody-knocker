@@ -2793,12 +2793,20 @@
 		FFB40C241FF77B78008857A0 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				FFD0D8781FFA72350027C3A7 /* Control */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		FFD0D8781FFA72350027C3A7 /* Control */ = {
+			isa = PBXGroup;
+			children = (
 				FFB40C261FF77BF7008857A0 /* Button.h */,
 				FFB40C251FF77BF7008857A0 /* Button.cpp */,
 				FFB40C291FF7F70F008857A0 /* Encoder.h */,
 				FFB40C281FF7F70F008857A0 /* Encoder.cpp */,
 			);
-			path = Source;
+			path = Control;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
