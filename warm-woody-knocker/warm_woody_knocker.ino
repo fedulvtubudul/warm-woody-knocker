@@ -1,7 +1,13 @@
 #include "Arduino.h"
 #include <LiquidCrystal.h>
+
 #include "src/Controls/Button.h"
 #include "src/Controls/Encoder.h"
+
+#include "src/Rhythm/Rhythm.h"
+#include "src/Rhythm/PatternRhythm.h"
+#include "src/Rhythm/LinearRhythm.h"
+
 
 //#include <U8g2lib.h>
 //
@@ -33,6 +39,10 @@ long const volumeValueMultiplier = 100;
 float const onbeatVolumeValueMultiplier = 1.5f;
 float const subdivVolumeValueMultiplier = 0.5f;
 
+
+#define RHYTHMS_COUNT 2
+Rhythm *rhythms[RHYTHMS_COUNT];
+int currentRhythm = 0;
 
 #define MIN_TEMPO 15
 #define MAX_TEMPO 300
@@ -70,14 +80,15 @@ boolean valueChanged = true;
 boolean runningChanged = true;
 
 enum EditValueMode {
-    editValueModeTempo,
+	editValueModeRhythm,
+	editValueModeTempo,
     editValueModeSubdiv,
     editValueModeAccent,
     editValueModeVolume,
     
     editValueModeMaxValue
   };
-int editMode = editValueModeTempo;
+int editMode = editValueModeRhythm;
 
 enum SubdivMode {
     subdivMode1to4,
@@ -134,6 +145,7 @@ void encoderSpinAction(SpinDirection direction);
 
 void encoderSpinAction(const int valueDelta);
 void deltaTempoValue(const int valueDelta);
+void deltaRhythmValue(const int valueDelta);
 void deltaSubdivValue (const int valueDelta);
 void deltaAccentValue (const int valueDelta);
 void deltaVolumeValue (const int valueDelta);
@@ -155,7 +167,7 @@ int positionX = 0;
 int positionY = 0;
 
 void setup() {
-  Serial.begin(115200);
+  // Serial.begin(115200);
 
 //  u8x8.begin();
 //  u8x8.home();
@@ -170,6 +182,8 @@ void setup() {
 //
 //
 //  u8x8.print("1234567890123456");
+
+	setupRhythms();
 
   refreshBeepIntervals();
 
@@ -189,6 +203,11 @@ void setup() {
   pinMode(OFFBEAT_OUTPUT, OUTPUT);
 	
 	
+}
+
+void setupRhythms() {
+	rhythms[0] = new PatternRhythm();
+	rhythms[1] = new LinearRhythm();
 }
 
 void drawValue() {
@@ -469,6 +488,10 @@ inline void printMode(void) {
     lcd.setCursor(0, 1);
     
     switch (editMode) {
+		case editValueModeRhythm: {
+            lcd.print("Rhythm   ");
+            break;
+          }
         case editValueModeTempo: {
             lcd.print("TEMPO   ");
             break;
@@ -493,6 +516,10 @@ void printValue() {
   lcd.print("    ");
   
   switch (editMode) {
+	  case editValueModeRhythm: {
+          printRhythmValue();
+          break;
+        }
       case editValueModeTempo: {
           printTempoValue();
           break;
@@ -510,6 +537,13 @@ void printValue() {
           break;
         }
     }
+}
+
+inline void printRhythmValue() {
+	Rhythm *rhythm = rhythms[currentRhythm];
+	int printOffset = rhythm->title().length();
+	lcd.setCursor(LCD_LINE_WIDTH - printOffset, 1);
+	lcd.print(rhythm->title());
 }
 
 inline void printTempoValue() {
@@ -599,6 +633,10 @@ void encoderSpinAction(SpinDirection direction) {
   int valueDelta = direction == spinDirectionCW ? 1 : -1;
 
   switch (editMode) {
+	  case editValueModeRhythm: {
+		  deltaRhythmValue(valueDelta);
+		  break;
+	  }
       case editValueModeTempo: {
           deltaTempoValue(valueDelta);
           break;
@@ -621,6 +659,20 @@ void encoderSpinAction(SpinDirection direction) {
 inline void refreshMeasurePositionFromTempo(unsigned int oldTempo) {
 	unsigned long currentTime = micros();
 	measureStart = currentTime - measurePosition * onbeatBeepInterval;
+}
+
+inline void deltaRhythmValue(const int valueDelta) {
+  unsigned int oldRhythm = currentRhythm;
+
+  currentRhythm += valueDelta;
+  currentRhythm = currentRhythm >= 0 ? currentRhythm : 0;
+  currentRhythm = currentRhythm <= RHYTHMS_COUNT ? currentRhythm : (RHYTHMS_COUNT-1);
+  
+  valueChanged = currentRhythm != oldRhythm;
+//   if (valueChanged) {
+    // refreshBeepIntervals();
+    // refreshMeasurePositionFromTempo(oldTempo);
+//   }
 }
 
 inline void deltaTempoValue(const int valueDelta) {
