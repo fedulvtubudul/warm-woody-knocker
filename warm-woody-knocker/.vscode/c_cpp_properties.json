@@ -15,12 +15,14 @@
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/avr/include/util/",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include/",
                 "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.*.*/include-fixed/",
+				"/Applications/Arduino.app/Contents/Java/hardware/tools/avr/lib/gcc/avr/4.9.2/include/",
+				"/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/variants/standard/",
                 "/Applications/Arduino.app/Contents/Java/libraries/LiquidCrystal/src"
             ],
-            "browse.path": {
+            "browse": {
                 "limitSymbolsToIncludedHeaders": false,
                 "path": [
-                    "${workspaceRoot}/**",
+                    "${workspaceRoot}",
                     "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/cores/arduino",
                     "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/EEPROM/",
                     "/Applications/Arduino.app/Contents/Java/hardware/arduino/avr/libraries/SPI/",
