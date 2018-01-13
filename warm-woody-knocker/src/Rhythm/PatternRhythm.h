@@ -8,11 +8,13 @@
 class PatternRhythm: public Rhythm {
 
 public:
-	
-	virtual String title();
-
+		
 	uint16_t patternLength;
 	uint8_t *patternValues;
+
+	virtual String title();
+	virtual void resetState();
+	virtual void check(unsigned long now);
 
 	virtual ~PatternRhythm();
 

@@ -184,6 +184,7 @@ void setup() {
 //  u8x8.print("1234567890123456");
 
 	setupRhythms();
+	rhythms[currentRhythm]->resetState();
 
   refreshBeepIntervals();
 
@@ -239,6 +240,10 @@ void loop() {
 //	}
 
   beepIfNeeded();
+	
+	unsigned long now = micros();
+	rhythms[currentRhythm]->check(now);
+
   movePendulumIfNeeded();
 
 	button->check();
@@ -670,16 +675,16 @@ inline void refreshMeasurePositionFromTempo(unsigned int oldTempo) {
 }
 
 inline void deltaRhythmValue(const int valueDelta) {
-  int oldRhythm = currentRhythm;
+	int oldRhythm = currentRhythm;
 
-  currentRhythm += valueDelta + RHYTHMS_COUNT;
-  currentRhythm %= RHYTHMS_COUNT;
-  
-  valueChanged = currentRhythm != oldRhythm;
-//   if (valueChanged) {
-    // refreshBeepIntervals();
-    // refreshMeasurePositionFromTempo(oldTempo);
-//   }
+	currentRhythm += valueDelta + RHYTHMS_COUNT;
+	currentRhythm %= RHYTHMS_COUNT;
+
+	valueChanged = currentRhythm != oldRhythm;
+
+	if (valueChanged) {
+		rhythms[currentRhythm]->resetState();
+	}
 }
 
 inline void deltaTempoValue(const int valueDelta) {

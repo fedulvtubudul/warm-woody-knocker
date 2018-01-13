@@ -9,3 +9,12 @@ String PatternRhythm::title() {
 PatternRhythm::~PatternRhythm() {
 
 }
+
+
+void PatternRhythm::resetState() {
+	digitalWrite(LED_BUILTIN, LOW);
+}
+
+void PatternRhythm::check(unsigned long now) {
+
+}
