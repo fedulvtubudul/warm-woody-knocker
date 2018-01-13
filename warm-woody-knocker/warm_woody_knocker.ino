@@ -484,28 +484,36 @@ inline void printChanges(void) {
   }
 }
 
+void clearLine(uint8_t line) {
+	lcd.setCursor(0, line);
+	char emptyLine[LCD_LINE_WIDTH];
+	memset(emptyLine, (int)' ', LCD_LINE_WIDTH);
+	lcd.write(emptyLine);
+}
+
 inline void printMode(void) {
+	clearLine(1);
     lcd.setCursor(0, 1);
     
     switch (editMode) {
 		case editValueModeRhythm: {
-            lcd.print("Rhythm   ");
+            lcd.print("RHYTHM");
             break;
           }
         case editValueModeTempo: {
-            lcd.print("TEMPO   ");
+            lcd.print("TEMPO");
             break;
           }
         case editValueModeSubdiv: {
-            lcd.print("SUBDIV  ");
+            lcd.print("SUBDIV");
             break;
           }
         case editValueModeAccent: {
-            lcd.print("ACCENT  ");
+            lcd.print("ACCENT");
             break;
           }
         case editValueModeVolume: {
-            lcd.print("VOLUME  ");
+            lcd.print("VOLUME");
             break;
           }
       }
@@ -662,11 +670,10 @@ inline void refreshMeasurePositionFromTempo(unsigned int oldTempo) {
 }
 
 inline void deltaRhythmValue(const int valueDelta) {
-  unsigned int oldRhythm = currentRhythm;
+  int oldRhythm = currentRhythm;
 
-  currentRhythm += valueDelta;
-  currentRhythm = currentRhythm >= 0 ? currentRhythm : 0;
-  currentRhythm = currentRhythm <= RHYTHMS_COUNT ? currentRhythm : (RHYTHMS_COUNT-1);
+  currentRhythm += valueDelta + RHYTHMS_COUNT;
+  currentRhythm %= RHYTHMS_COUNT;
   
   valueChanged = currentRhythm != oldRhythm;
 //   if (valueChanged) {
