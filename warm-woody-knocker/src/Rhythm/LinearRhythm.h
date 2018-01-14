@@ -21,7 +21,12 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
+	LinearRhythm();
 	virtual ~LinearRhythm();
+
+private:
+
+	void setupParameters(void);
 
 };
 

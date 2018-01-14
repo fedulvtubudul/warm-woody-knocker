@@ -3,14 +3,25 @@
 #define BPM_TO_MICRO 60000000lu
 
 
-String LinearRhythm::title() {
-	return String("Linear");
+LinearRhythm::LinearRhythm() {
+	this->setupParameters();
 }
 
 
 LinearRhythm::~LinearRhythm() {
 
 }
+
+
+void LinearRhythm::setupParameters() {
+	parametersCount = 3;
+}
+
+
+String LinearRhythm::title() {
+	return String("Linear");
+}
+
 
 bool ledState = LOW;
 
@@ -21,8 +32,6 @@ void LinearRhythm::resetState() {
 
 	digitalWrite(LED_BUILTIN, LOW);
 }
-
-
 
 
 void LinearRhythm::check(unsigned long now) {

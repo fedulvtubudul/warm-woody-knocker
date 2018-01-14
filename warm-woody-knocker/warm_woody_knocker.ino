@@ -79,6 +79,7 @@ boolean modeChanged = true;
 boolean valueChanged = true;
 boolean runningChanged = true;
 
+int const globalParametersCount = 2;
 enum EditValueMode {
 	editValueModeRhythm,
 	editValueModeTempo,
@@ -633,8 +634,10 @@ inline void printAccentValue(void) {
 }
 
 void buttonClickAction(void) {
-  ++editMode %= editValueModeMaxValue;
-  modeChanged = true;
+	int parametersCount = rhythms[currentRhythm]->getParametersCount() + globalParametersCount;
+	editMode = (editMode + 1) % parametersCount;
+
+	modeChanged = true;
 }
 
 void buttonHoldAction(void) {
