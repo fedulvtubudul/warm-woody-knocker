@@ -4,6 +4,9 @@
 #include "src/Controls/Button.h"
 #include "src/Controls/Encoder.h"
 
+#include "src/Parameters/Parameter.h"
+#include "src/Parameters/EnumParameter.h"
+
 #include "src/Rhythm/Rhythm.h"
 #include "src/Rhythm/PatternRhythm.h"
 #include "src/Rhythm/LinearRhythm.h"
@@ -42,7 +45,7 @@ float const subdivVolumeValueMultiplier = 0.5f;
 
 #define RHYTHMS_COUNT 2
 Rhythm *rhythms[RHYTHMS_COUNT];
-int currentRhythm = 0;
+int currentRhythmIndex = 0;
 
 #define MIN_TEMPO 15
 #define MAX_TEMPO 300
@@ -79,17 +82,23 @@ boolean modeChanged = true;
 boolean valueChanged = true;
 boolean runningChanged = true;
 
-int const globalParametersCount = 2;
-enum EditValueMode {
-	editValueModeRhythm,
-	editValueModeTempo,
-    editValueModeSubdiv,
-    editValueModeAccent,
-    editValueModeVolume,
+int globalParametersCount;
+Parameter **globalParameters;
+int currentParameterIndex = 0;
+Parameter *currentParameter();
+
+// enum EditValueMode {
+// 	editValueModeRhythm,
+//     editValueModeVolume,
+
+// 	editValueModeTempo,
+//     editValueModeSubdiv,
+//     editValueModeAccent,
+
     
-    editValueModeMaxValue
-  };
-int editMode = editValueModeRhythm;
+//     editValueModeMaxValue
+//   };
+// int editMode = editValueModeRhythm;
 
 enum SubdivMode {
     subdivMode1to4,
@@ -185,7 +194,7 @@ void setup() {
 //  u8x8.print("1234567890123456");
 
 	setupRhythms();
-	rhythms[currentRhythm]->resetState();
+	setupGlobalParameters();
 
   refreshBeepIntervals();
 
@@ -203,14 +212,38 @@ void setup() {
   pinMode(LED_OUTPUT, OUTPUT);
   pinMode(ONBEAT_OUTPUT, OUTPUT);
   pinMode(OFFBEAT_OUTPUT, OUTPUT);
-	
-	
 }
+
 
 void setupRhythms() {
 	rhythms[0] = new PatternRhythm();
 	rhythms[1] = new LinearRhythm();
 }
+
+
+void setupGlobalParameters() {
+	globalParametersCount = 1;
+	globalParameters = new Parameter*[globalParametersCount];
+
+	globalParameters[0] = rhythmParameter();
+}
+
+
+Parameter *rhythmParameter() {
+	String *rhythmTitles = new String[RHYTHMS_COUNT];
+	for (int i = 0; i < RHYTHMS_COUNT; ++i) {
+		rhythmTitles[i] = rhythms[i]->title();
+	}
+
+	EnumParameter *rhythmParameter = new EnumParameter(
+			new String("RHYTHM"),
+			RHYTHMS_COUNT,
+			rhythmTitles
+		);
+
+	return rhythmParameter;
+}
+
 
 void drawValue() {
 //	char cs[16];
@@ -243,7 +276,7 @@ void loop() {
   beepIfNeeded();
 	
 	unsigned long now = micros();
-	rhythms[currentRhythm]->check(now);
+	rhythms[currentRhythmIndex]->check(now);
 
   movePendulumIfNeeded();
 
@@ -497,64 +530,84 @@ void clearLine(uint8_t line) {
 	lcd.write(emptyLine);
 }
 
-inline void printMode(void) {
+Parameter *currentParameter() {
+	if (currentParameterIndex < globalParametersCount) {
+		return globalParameters[currentParameterIndex];
+	} else {
+		int rhythmParameterIndex = currentParameterIndex - globalParametersCount;
+		return rhythms[currentRhythmIndex]->getParameter(rhythmParameterIndex);
+	}
+}
+
+void printMode(void) {
+	String *title = currentParameter()->getTitle();
+
 	clearLine(1);
-    lcd.setCursor(0, 1);
-    
-    switch (editMode) {
-		case editValueModeRhythm: {
-            lcd.print("RHYTHM");
-            break;
-          }
-        case editValueModeTempo: {
-            lcd.print("TEMPO");
-            break;
-          }
-        case editValueModeSubdiv: {
-            lcd.print("SUBDIV");
-            break;
-          }
-        case editValueModeAccent: {
-            lcd.print("ACCENT");
-            break;
-          }
-        case editValueModeVolume: {
-            lcd.print("VOLUME");
-            break;
-          }
-      }
+	lcd.setCursor(0, 1);
+	lcd.print(*title);
+
+	// switch (editMode) {
+	// 	case editValueModeRhythm: {
+    //         lcd.print("RHYTHM");
+    //         break;
+    //       }
+    //     case editValueModeTempo: {
+    //         lcd.print("TEMPO");
+    //         break;
+    //       }
+    //     case editValueModeSubdiv: {
+    //         lcd.print("SUBDIV");
+    //         break;
+    //       }
+    //     case editValueModeAccent: {
+    //         lcd.print("ACCENT");
+    //         break;
+    //       }
+    //     case editValueModeVolume: {
+    //         lcd.print("VOLUME");
+    //         break;
+    //       }
+    //   }
 }
 
 void printValue() {
-  lcd.setCursor(LCD_LINE_WIDTH-1 - 4, 1);
-  lcd.print("    ");
-  
-  switch (editMode) {
-	  case editValueModeRhythm: {
-          printRhythmValue();
-          break;
-        }
-      case editValueModeTempo: {
-          printTempoValue();
-          break;
-        }
-      case editValueModeSubdiv: {
-          printSubdivValue();
-          break;
-        }
-      case editValueModeAccent: {
-          printAccentValue();
-          break;
-        }
-      case editValueModeVolume: {
-          printVolumeValue();
-          break;
-        }
-    }
+//   lcd.setCursor(LCD_LINE_WIDTH-1 - 4, 1);
+//   lcd.print("    ");
+
+	String value = currentParameter()->printableValue();
+
+	// clearLine(1);
+	// lcd.rightToLeft();
+	lcd.setCursor(LCD_LINE_WIDTH - value.length(), 1);
+	lcd.print(value);
+	// lcd.leftToRight();
+
+//   switch (editMode) {
+// 	  case editValueModeRhythm: {
+//           printRhythmValue();
+//           break;
+//         }
+//       case editValueModeTempo: {
+//           printTempoValue();
+//           break;
+//         }
+//       case editValueModeSubdiv: {
+//           printSubdivValue();
+//           break;
+//         }
+//       case editValueModeAccent: {
+//           printAccentValue();
+//           break;
+//         }
+//       case editValueModeVolume: {
+//           printVolumeValue();
+//           break;
+//         }
+//     }
 }
 
 inline void printRhythmValue() {
-	Rhythm *rhythm = rhythms[currentRhythm];
+	Rhythm *rhythm = rhythms[currentRhythmIndex];
 	int printOffset = rhythm->title().length();
 	lcd.setCursor(LCD_LINE_WIDTH - printOffset, 1);
 	lcd.print(rhythm->title());
@@ -634,8 +687,8 @@ inline void printAccentValue(void) {
 }
 
 void buttonClickAction(void) {
-	int parametersCount = rhythms[currentRhythm]->getParametersCount() + globalParametersCount;
-	editMode = (editMode + 1) % parametersCount;
+	int parametersCount = globalParametersCount + rhythms[currentRhythmIndex]->getParametersCount();
+	currentParameterIndex = (currentParameterIndex + 1) % parametersCount;
 
 	modeChanged = true;
 }
@@ -646,30 +699,33 @@ void buttonHoldAction(void) {
 }
 
 void encoderSpinAction(SpinDirection direction) {
-  int valueDelta = direction == spinDirectionCW ? 1 : -1;
+	int valueDelta = direction == spinDirectionCW ? 1 : -1;
+	currentParameter()->stepBy(valueDelta);
 
-  switch (editMode) {
-	  case editValueModeRhythm: {
-		  deltaRhythmValue(valueDelta);
-		  break;
-	  }
-      case editValueModeTempo: {
-          deltaTempoValue(valueDelta);
-          break;
-        }
-      case editValueModeSubdiv: {
-          deltaSubdivValue(valueDelta);
-          break;
-        }
-      case editValueModeAccent: {
-          deltaAccentValue(valueDelta);
-          break;
-        }
-	  case editValueModeVolume: {
-		  deltaVolumeValue(valueDelta);
-		  break;
-	  }
-    }  
+	valueChanged = true;
+	printChanges();
+//   switch (editMode) {
+// 	  case editValueModeRhythm: {
+// 		  deltaRhythmValue(valueDelta);
+// 		  break;
+// 	  }
+//       case editValueModeTempo: {
+//           deltaTempoValue(valueDelta);
+//           break;
+//         }
+//       case editValueModeSubdiv: {
+//           deltaSubdivValue(valueDelta);
+//           break;
+//         }
+//       case editValueModeAccent: {
+//           deltaAccentValue(valueDelta);
+//           break;
+//         }
+// 	  case editValueModeVolume: {
+// 		  deltaVolumeValue(valueDelta);
+// 		  break;
+// 	  }
+//     }  
 }
 
 inline void refreshMeasurePositionFromTempo(unsigned int oldTempo) {
@@ -678,15 +734,15 @@ inline void refreshMeasurePositionFromTempo(unsigned int oldTempo) {
 }
 
 inline void deltaRhythmValue(const int valueDelta) {
-	int oldRhythm = currentRhythm;
+	int oldRhythm = currentRhythmIndex;
 
-	currentRhythm += valueDelta + RHYTHMS_COUNT;
-	currentRhythm %= RHYTHMS_COUNT;
+	currentRhythmIndex += valueDelta + RHYTHMS_COUNT;
+	currentRhythmIndex %= RHYTHMS_COUNT;
 
-	valueChanged = currentRhythm != oldRhythm;
+	valueChanged = currentRhythmIndex != oldRhythm;
 
 	if (valueChanged) {
-		rhythms[currentRhythm]->resetState();
+		rhythms[currentRhythmIndex]->resetState();
 	}
 }
 

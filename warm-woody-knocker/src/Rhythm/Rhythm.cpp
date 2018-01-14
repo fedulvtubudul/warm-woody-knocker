@@ -1,4 +1,5 @@
 #include "Rhythm.h"
+#include "../Parameters/Parameter.h"
 
 
 Rhythm::~Rhythm() {
@@ -7,4 +8,8 @@ Rhythm::~Rhythm() {
 
 int Rhythm::getParametersCount(void) {
 	return parametersCount;
+}
+
+Parameter * Rhythm::getParameter(int parameterIndex) {
+	return parameters[parameterIndex];
 }

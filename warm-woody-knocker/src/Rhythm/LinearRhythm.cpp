@@ -5,6 +5,7 @@
 
 LinearRhythm::LinearRhythm() {
 	this->setupParameters();
+	this->resetState();
 }
 
 

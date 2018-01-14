@@ -4,6 +4,7 @@
 
 PatternRhythm::PatternRhythm() {
 	this->setupParameters();
+	this->resetState();
 }
 
 PatternRhythm::~PatternRhythm() {
