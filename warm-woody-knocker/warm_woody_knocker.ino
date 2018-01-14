@@ -6,6 +6,7 @@
 
 #include "src/Parameters/Parameter.h"
 #include "src/Parameters/EnumParameter.h"
+#include "src/Parameters/TempoParameter.h"
 
 #include "src/Rhythm/Rhythm.h"
 #include "src/Rhythm/PatternRhythm.h"
@@ -45,7 +46,7 @@ float const subdivVolumeValueMultiplier = 0.5f;
 
 #define RHYTHMS_COUNT 2
 Rhythm *rhythms[RHYTHMS_COUNT];
-int currentRhythmIndex = 0;
+int currentRhythmIndex;
 
 #define MIN_TEMPO 15
 #define MAX_TEMPO 300
@@ -84,6 +85,8 @@ boolean runningChanged = true;
 
 int globalParametersCount;
 Parameter **globalParameters;
+EnumParameter *rhythmParameter;
+TempoParameter *tempoParameter;
 int currentParameterIndex = 0;
 Parameter *currentParameter();
 
@@ -177,7 +180,7 @@ int positionX = 0;
 int positionY = 0;
 
 void setup() {
-  // Serial.begin(115200);
+	Serial.begin(115200);
 
 //  u8x8.begin();
 //  u8x8.home();
@@ -216,8 +219,12 @@ void setup() {
 
 
 void setupRhythms() {
+	tempoParameter = makeTempoParameter();
+
 	rhythms[0] = new PatternRhythm();
-	rhythms[1] = new LinearRhythm();
+	rhythms[1] = new LinearRhythm(tempoParameter);
+
+	currentRhythmIndex = 0;
 }
 
 
@@ -225,25 +232,38 @@ void setupGlobalParameters() {
 	globalParametersCount = 1;
 	globalParameters = new Parameter*[globalParametersCount];
 
-	globalParameters[0] = rhythmParameter();
+	rhythmParameter = makeRhythmParameter();
+	globalParameters[0] = rhythmParameter;
 }
 
+void onRhythmChange() {
+	currentRhythmIndex = rhythmParameter->getRawValue();
+}
 
-Parameter *rhythmParameter() {
-	String *rhythmTitles = new String[RHYTHMS_COUNT];
+EnumParameter *makeRhythmParameter() {
+	String *titles = new String[RHYTHMS_COUNT];
 	for (int i = 0; i < RHYTHMS_COUNT; ++i) {
-		rhythmTitles[i] = rhythms[i]->title();
+		titles[i] = rhythms[i]->title();
 	}
 
-	EnumParameter *rhythmParameter = new EnumParameter(
+	EnumParameter *parameter = new EnumParameter(
 			new String("RHYTHM"),
+			onRhythmChange,
 			RHYTHMS_COUNT,
-			rhythmTitles
+			titles
 		);
 
-	return rhythmParameter;
+	return parameter;
 }
 
+void onTempoChange() {
+
+}
+
+TempoParameter *makeTempoParameter() {
+	TempoParameter *parameter = new TempoParameter(onTempoChange);
+	return parameter;
+}
 
 void drawValue() {
 //	char cs[16];
@@ -691,6 +711,19 @@ void buttonClickAction(void) {
 	currentParameterIndex = (currentParameterIndex + 1) % parametersCount;
 
 	modeChanged = true;
+	
+	Rhythm *r = rhythms[currentRhythmIndex];
+	int rpc = r->getParametersCount();
+
+
+	Serial.println(parametersCount);
+	
+	Serial.print("rpc = ");
+	Serial.println(rpc);
+
+	Serial.println(currentParameterIndex);
+
+
 }
 
 void buttonHoldAction(void) {

@@ -1,10 +1,11 @@
 #include "LinearRhythm.h"
+#include "../Parameters/TempoParameter.h"
 
 #define BPM_TO_MICRO 60000000lu
 
 
-LinearRhythm::LinearRhythm() {
-	this->setupParameters();
+LinearRhythm::LinearRhythm(TempoParameter *tempoParameter) {
+	this->setupParameters(tempoParameter);
 	this->resetState();
 }
 
@@ -13,9 +14,11 @@ LinearRhythm::~LinearRhythm() {
 
 }
 
-
-void LinearRhythm::setupParameters() {
-	parametersCount = 3;
+void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
+	this->parametersCount = 1;
+	this->parameters = new Parameter*[this->parametersCount];
+	
+	this->parameters[0] = tempoParameter;
 }
 
 

@@ -7,7 +7,7 @@ Rhythm::~Rhythm() {
 }
 
 int Rhythm::getParametersCount(void) {
-	return parametersCount;
+	return this->parametersCount;
 }
 
 Parameter * Rhythm::getParameter(int parameterIndex) {

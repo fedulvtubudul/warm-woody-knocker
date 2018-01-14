@@ -5,8 +5,8 @@ EnumParameter::~EnumParameter() {
 	
 }
 
-EnumParameter::EnumParameter(String *title, int valuesCount, String *valueTitles) :
-	Parameter(title),
+EnumParameter::EnumParameter(String *title, void (*onChange)(void), int valuesCount, String *valueTitles) :
+	Parameter(title, onChange),
 	valuesCount(valuesCount),
 	valueTitles(valueTitles) {
 }
@@ -14,9 +14,15 @@ EnumParameter::EnumParameter(String *title, int valuesCount, String *valueTitles
 void EnumParameter::stepBy(int stepValue) {
 	currentValue += stepValue + valuesCount;
 	currentValue %= valuesCount;
+
+	notify();
 }
 
 
 String EnumParameter::printableValue() {
 	return valueTitles[currentValue];
+}
+
+int EnumParameter::getRawValue() {
+	return currentValue;
 }
