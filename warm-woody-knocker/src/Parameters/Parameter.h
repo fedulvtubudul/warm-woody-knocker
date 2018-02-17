@@ -17,7 +17,7 @@ public:
 
 protected:
 
-	void notify();
+	virtual void notify();
 
 private :
 	

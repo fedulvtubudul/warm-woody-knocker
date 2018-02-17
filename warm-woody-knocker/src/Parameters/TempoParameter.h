@@ -12,6 +12,11 @@ public:
 	TempoParameter(void (*onChange)(TempoParameter *sender));
 	~TempoParameter();
 
+	unsigned long beatDuration;
+
+protected:
+
+	virtual void notify();
 };
 
 #endif

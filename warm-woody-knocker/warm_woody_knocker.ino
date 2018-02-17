@@ -256,12 +256,8 @@ EnumParameter *makeRhythmParameter() {
 	return parameter;
 }
 
-void onTempoChange() {
-
-}
-
 TempoParameter *makeTempoParameter() {
-	TempoParameter *parameter = new TempoParameter(onTempoChange);
+	TempoParameter *parameter = new TempoParameter(nullptr);
 	return parameter;
 }
 

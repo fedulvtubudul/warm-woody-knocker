@@ -1,7 +1,6 @@
 #include "LinearRhythm.h"
 #include "../Parameters/TempoParameter.h"
 
-#define BPM_TO_MICRO 60000000lu
 
 
 LinearRhythm::LinearRhythm(TempoParameter *tempoParameter) {
@@ -19,6 +18,7 @@ void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->parameters = new Parameter*[this->parametersCount];
 	
 	this->parameters[0] = tempoParameter;
+	this->tempo = tempoParameter;
 }
 
 
@@ -30,8 +30,6 @@ String LinearRhythm::title() {
 bool ledState = LOW;
 
 void LinearRhythm::resetState() {
-	this->tempo = 120;
-	this->beatDuration = BPM_TO_MICRO / tempo;
 	this->measureStart = 0;
 
 	digitalWrite(LED_BUILTIN, LOW);
@@ -41,7 +39,7 @@ void LinearRhythm::resetState() {
 void LinearRhythm::check(unsigned long now) {
 	unsigned long timeSinceMeasureStart = now - this->measureStart;
 
-	if (timeSinceMeasureStart >= this->beatDuration) {
+	if (timeSinceMeasureStart >= this->tempo->beatDuration) {
 		ledState = !ledState;
 		digitalWrite(LED_BUILTIN, ledState);
 		this->measureStart = now;

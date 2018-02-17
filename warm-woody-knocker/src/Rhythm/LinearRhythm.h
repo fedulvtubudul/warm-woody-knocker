@@ -11,14 +11,6 @@ class TempoParameter;
 class LinearRhythm: public Rhythm {
 
 public:
-	
-	uint16_t tempo;
-	unsigned long beatDuration;
-	unsigned long measureStart;
-
-
-	uint16_t patternLength;
-	uint8_t *patternValues;
 
 	virtual String title();
 	virtual void resetState();
@@ -30,6 +22,8 @@ public:
 private:
 
 	void setupParameters(TempoParameter *tempoParameter);
+	TempoParameter *tempo;
+	unsigned long measureStart;
 
 };
 

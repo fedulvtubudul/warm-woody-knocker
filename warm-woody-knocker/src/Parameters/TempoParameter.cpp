@@ -1,4 +1,5 @@
 #include "TempoParameter.h"
+#include "../Time/TimeConversion.h"
 
 
 TempoParameter::TempoParameter(void (*onChange)(TempoParameter *sender)) : 
@@ -6,6 +7,11 @@ TempoParameter::TempoParameter(void (*onChange)(TempoParameter *sender)) :
 
 }
 
+void TempoParameter::notify() {
+	this->beatDuration = beatDurationFromBPM(this->value);
+
+	IntegerParameter::notify();
+}
 
 TempoParameter::~TempoParameter() {
 	
