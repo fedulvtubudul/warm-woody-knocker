@@ -9,7 +9,7 @@ class TempoParameter : public IntegerParameter {
 
 public:
 
-	TempoParameter(void (*onChange)(void));
+	TempoParameter(void (*onChange)(TempoParameter *sender));
 	~TempoParameter();
 
 };

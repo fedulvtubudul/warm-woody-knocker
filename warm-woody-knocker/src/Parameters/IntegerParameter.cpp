@@ -5,7 +5,7 @@ IntegerParameter::~IntegerParameter() {
 	
 }
 
-IntegerParameter::IntegerParameter(String *title, void (*onChange)(void), int minValue, int maxValue, int initialValue) :
+IntegerParameter::IntegerParameter(String *title, void (*onChange)(IntegerParameter *sender), int minValue, int maxValue, int initialValue) :
 	Parameter(title, onChange),
 	minValue(minValue),
 	maxValue(maxValue),

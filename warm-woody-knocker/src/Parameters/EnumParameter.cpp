@@ -5,7 +5,7 @@ EnumParameter::~EnumParameter() {
 	
 }
 
-EnumParameter::EnumParameter(String *title, void (*onChange)(void), int valuesCount, String *valueTitles) :
+EnumParameter::EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles) :
 	Parameter(title, onChange),
 	valuesCount(valuesCount),
 	valueTitles(valueTitles) {

@@ -236,8 +236,8 @@ void setupGlobalParameters() {
 	globalParameters[0] = rhythmParameter;
 }
 
-void onRhythmChange() {
-	currentRhythmIndex = rhythmParameter->getRawValue();
+void onRhythmChange(EnumParameter *sender) {
+	currentRhythmIndex = sender->getRawValue();
 }
 
 EnumParameter *makeRhythmParameter() {

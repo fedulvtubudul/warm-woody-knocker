@@ -9,7 +9,7 @@ class EnumParameter : public Parameter {
 
 public:
 
-	EnumParameter(String *title, void (*onChange)(void), int valuesCount, String *valueTitles);
+	EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles);
 	~EnumParameter();
 	
 	virtual void stepBy(int stepValue);

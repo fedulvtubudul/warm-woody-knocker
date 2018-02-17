@@ -9,7 +9,7 @@ class IntegerParameter : public Parameter {
 
 public:
 
-	IntegerParameter(String *title, void (*onChange)(void), int minValue, int maxValue, int initialValue);
+	IntegerParameter(String *title, void (*onChange)(IntegerParameter *sender), int minValue, int maxValue, int initialValue);
 	~IntegerParameter();
 	
 	virtual void stepBy(int stepValue);
