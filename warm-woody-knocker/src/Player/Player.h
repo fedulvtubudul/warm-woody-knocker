@@ -2,17 +2,14 @@
 #define Player_h
 
 #include "Arduino.h"
+#include "SoundTrack.h"
 
 
-enum class Sound {
-	low,
-	high
-};
+enum SoundChannel {
+	soundLow = 0,
+	soundHigh = 1,
 
-
-enum class SoundLevel {
-	low,
-	high
+	soundChannelsCount
 };
 
 
@@ -23,8 +20,12 @@ public:
 	Player();
 	virtual ~Player();
 
-	virtual void check(unsigned long now);
-	virtual void play(Sound sound, SoundLevel level);
+	void check(unsigned long now);
+	void play(SoundChannel sound, SoundLevel level);
+
+private:
+
+	SoundTrack **tracks;
 
 };
 

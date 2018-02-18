@@ -29,7 +29,10 @@ private:
 	EnumParameter *LinearRhythm::makeDivisionParameter();
 
 	TempoParameter *tempo;
+	IntegerParameter *meter;
+
 	unsigned long measureStart;
+	unsigned long beatStart;
 
 };
 

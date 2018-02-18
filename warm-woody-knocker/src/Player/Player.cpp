@@ -1,35 +1,26 @@
 #include "Player.h"
 
-
-#define ONBEAT_OUTPUT 8
-#define OFFBEAT_OUTPUT 9
+#define LOW_CHANNEL_PIN 8
+#define HIGH_CHANNEL_PIN 9
 
 
 Player::Player() {
+	tracks = new SoundTrack*[soundChannelsCount];
 
+	tracks[soundLow] = new SoundTrack(LOW_CHANNEL_PIN);
+	tracks[soundHigh] = new SoundTrack(HIGH_CHANNEL_PIN);
 }
 
 Player::~Player() {
 
 }
 
-bool shouldStart = false;
-unsigned long started = 0;
-
-
 void Player::check(unsigned long now) {
-
-	if (shouldStart) {
-		started = now;
-		shouldStart = false;
-		digitalWrite(ONBEAT_OUTPUT, HIGH);
-	}
-
-	if (now - started > 1000) {
-		digitalWrite(ONBEAT_OUTPUT, LOW);
+	for (int i = 0; i < soundChannelsCount; ++i) {
+		tracks[i]->check(now);
 	}
 }
 
-void Player::play(Sound sound, SoundLevel level) {
-	shouldStart = true;
+void Player::play(SoundChannel sound, SoundLevel level) {
+	tracks[sound]->play(level);
 }

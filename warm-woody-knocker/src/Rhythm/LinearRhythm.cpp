@@ -25,10 +25,11 @@ LinearRhythm::~LinearRhythm() {
 
 void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
+	this->meter = makeMeasureLengthParameter();
 
 	this->parametersCount = 3;
 	this->parameters = new Parameter*[this->parametersCount];
-	this->parameters[0] = makeMeasureLengthParameter();
+	this->parameters[0] = meter;
 	this->parameters[1] = new DivisionParameter(nullptr);
 	this->parameters[2] = tempoParameter;
 }
@@ -44,12 +45,19 @@ void LinearRhythm::resetState() {
 
 void LinearRhythm::check(unsigned long now) {
 	unsigned long timeSinceMeasureStart = now - measureStart;
+	unsigned long timeSinceBeatStart = now - beatStart;
 
-	if (timeSinceMeasureStart >= tempo->beatDuration) {
-		player->play(Sound::high, SoundLevel::high);
+	unsigned long beatDuration = tempo->beatDuration;
+	unsigned long measureDuration = beatDuration * meter->getValue();
+
+	if (timeSinceMeasureStart >= measureDuration) {
 		measureStart = now;
+		beatStart = now;
+		player->play(soundHigh, SoundLevel::high);
+	} else if (timeSinceBeatStart >= beatDuration) {
+		beatStart = now;
+		player->play(soundLow, SoundLevel::high);
 	}
-	
 }
 
 IntegerParameter *LinearRhythm::makeMeasureLengthParameter() {
