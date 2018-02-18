@@ -12,6 +12,7 @@ public:
 	IntegerParameter(String *title, void (*onChange)(IntegerParameter *sender), int minValue, int maxValue, int initialValue);
 	~IntegerParameter();
 	
+	int getValue();
 	virtual void stepBy(int stepValue);
 	virtual String printableValue();
 

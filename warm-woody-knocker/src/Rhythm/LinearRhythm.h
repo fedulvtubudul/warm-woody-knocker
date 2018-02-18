@@ -6,6 +6,8 @@
 
 
 class TempoParameter;
+class IntegerParameter;
+class EnumParameter;
 
 
 class LinearRhythm: public Rhythm {
@@ -22,6 +24,9 @@ public:
 private:
 
 	void setupParameters(TempoParameter *tempoParameter);
+	IntegerParameter *makeMeasureLengthParameter();
+	EnumParameter *LinearRhythm::makeDivisionParameter();
+
 	TempoParameter *tempo;
 	unsigned long measureStart;
 

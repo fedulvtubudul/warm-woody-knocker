@@ -1,6 +1,14 @@
 #include "LinearRhythm.h"
+#include "../Parameters/IntegerParameter.h"
 #include "../Parameters/TempoParameter.h"
+#include "../Parameters/DivisionParameter.h"
 
+
+static int const minMeterValue = 0;
+static int const maxMeterValue = 16;
+static int const defaultMeterValue = 4;
+
+static int const divisionsCount = 3;
 
 
 LinearRhythm::LinearRhythm(TempoParameter *tempoParameter) {
@@ -14,11 +22,13 @@ LinearRhythm::~LinearRhythm() {
 }
 
 void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
-	this->parametersCount = 1;
-	this->parameters = new Parameter*[this->parametersCount];
-	
-	this->parameters[0] = tempoParameter;
 	this->tempo = tempoParameter;
+
+	this->parametersCount = 3;
+	this->parameters = new Parameter*[this->parametersCount];
+	this->parameters[0] = makeMeasureLengthParameter();
+	this->parameters[1] = new DivisionParameter(nullptr);
+	this->parameters[2] = tempoParameter;
 }
 
 
@@ -35,7 +45,6 @@ void LinearRhythm::resetState() {
 	digitalWrite(LED_BUILTIN, LOW);
 }
 
-
 void LinearRhythm::check(unsigned long now) {
 	unsigned long timeSinceMeasureStart = now - this->measureStart;
 
@@ -45,4 +54,16 @@ void LinearRhythm::check(unsigned long now) {
 		this->measureStart = now;
 	}
 	
+}
+
+IntegerParameter *LinearRhythm::makeMeasureLengthParameter() {
+	IntegerParameter *parameter = new IntegerParameter(
+			new String("METER"),
+			nullptr,
+			minMeterValue,
+			maxMeterValue,
+			defaultMeterValue
+		);
+
+	return parameter;
 }

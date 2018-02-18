@@ -13,7 +13,6 @@ IntegerParameter::IntegerParameter(String *title, void (*onChange)(IntegerParame
 		
 }
 
-
 void IntegerParameter::stepBy(int stepValue) {
 	value += stepValue;
 	value = value > minValue ? value : minValue;
@@ -22,6 +21,9 @@ void IntegerParameter::stepBy(int stepValue) {
 	notify();
 }
 
+int IntegerParameter::getValue() {
+	return value;
+}
 
 String IntegerParameter::printableValue() {
 	return String(value);
