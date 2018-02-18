@@ -9,19 +9,22 @@ class EnumParameter : public Parameter {
 
 public:
 
-	EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles);
+	EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles, int initialValue);
 	~EnumParameter();
 	
 	virtual void stepBy(int stepValue);
 	virtual int getRawValue();
 	virtual String printableValue();
 
+protected:
+
+	int valuesCount;
+	String *valueTitles;
+	int value;
+
 private:
 
 	EnumParameter();
-	int valuesCount;
-	String *valueTitles;
-	int currentValue;
 
 };
 

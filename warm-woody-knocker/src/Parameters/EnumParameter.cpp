@@ -5,24 +5,26 @@ EnumParameter::~EnumParameter() {
 	
 }
 
-EnumParameter::EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles) :
+EnumParameter::EnumParameter(String *title, void (*onChange)(EnumParameter *sender), int valuesCount, String *valueTitles, int initialValue) :
 	Parameter(title, onChange),
 	valuesCount(valuesCount),
-	valueTitles(valueTitles) {
+	valueTitles(valueTitles),
+	value(initialValue) {
+	
 }
 
 void EnumParameter::stepBy(int stepValue) {
-	currentValue += stepValue + valuesCount;
-	currentValue %= valuesCount;
+	value += stepValue + valuesCount;
+	value %= valuesCount;
 
 	notify();
 }
 
 
 String EnumParameter::printableValue() {
-	return valueTitles[currentValue];
+	return valueTitles[value];
 }
 
 int EnumParameter::getRawValue() {
-	return currentValue;
+	return value;
 }

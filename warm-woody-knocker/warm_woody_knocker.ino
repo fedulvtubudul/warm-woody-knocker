@@ -250,7 +250,8 @@ EnumParameter *makeRhythmParameter() {
 			new String("RHYTHM"),
 			onRhythmChange,
 			RHYTHMS_COUNT,
-			titles
+			titles,
+			0
 		);
 
 	return parameter;
