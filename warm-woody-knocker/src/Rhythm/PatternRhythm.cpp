@@ -1,8 +1,9 @@
 #include "PatternRhythm.h"
 
 
+PatternRhythm::PatternRhythm(Player *player):
+	Rhythm(player) {
 
-PatternRhythm::PatternRhythm() {
 	this->setupParameters();
 	this->resetState();
 }

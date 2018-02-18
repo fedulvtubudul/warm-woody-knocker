@@ -12,6 +12,8 @@
 #include "src/Rhythm/PatternRhythm.h"
 #include "src/Rhythm/LinearRhythm.h"
 
+#include "src/Player/Player.h"
+
 
 //#include <U8g2lib.h>
 //
@@ -89,6 +91,8 @@ EnumParameter *rhythmParameter;
 TempoParameter *tempoParameter;
 int currentParameterIndex = 0;
 Parameter *currentParameter();
+
+Player *player;
 
 // enum EditValueMode {
 // 	editValueModeRhythm,
@@ -196,6 +200,7 @@ void setup() {
 //
 //  u8x8.print("1234567890123456");
 
+	setupPlayer();
 	setupRhythms();
 	setupGlobalParameters();
 
@@ -217,12 +222,15 @@ void setup() {
   pinMode(OFFBEAT_OUTPUT, OUTPUT);
 }
 
+void setupPlayer() {
+	player = new Player();
+}
 
 void setupRhythms() {
 	tempoParameter = makeTempoParameter();
 
-	rhythms[0] = new PatternRhythm();
-	rhythms[1] = new LinearRhythm(tempoParameter);
+	rhythms[0] = new PatternRhythm(player);
+	rhythms[1] = new LinearRhythm(player, tempoParameter);
 
 	currentRhythmIndex = 0;
 }
@@ -290,7 +298,7 @@ void loop() {
 //		tempo += 1;
 //	}
 
-  beepIfNeeded();
+//   beepIfNeeded();
 	
 	unsigned long now = micros();
 	rhythms[currentRhythmIndex]->check(now);
@@ -299,6 +307,7 @@ void loop() {
 
 	button->check();
 	encoder->check();
+	player->check(now);
 
   printChanges();
 }

@@ -5,6 +5,7 @@
 
 
 class Parameter;
+class Player;
 
 
 class Rhythm {
@@ -18,13 +19,14 @@ public:
 	int getParametersCount();
 	Parameter *getParameter(int parameterIndex);
 
-	// Rhythm();
+	Rhythm(Player *player);
 	virtual ~Rhythm();
 
 protected:
 
 	int parametersCount;
 	Parameter **parameters;
+	Player *player;
 
 };
 

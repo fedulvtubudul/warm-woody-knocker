@@ -5,6 +5,9 @@
 #include "Rhythm.h"
 
 
+class Player;
+
+
 class PatternRhythm: public Rhythm {
 
 public:
@@ -16,7 +19,7 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	PatternRhythm();
+	PatternRhythm(Player *player);
 	virtual ~PatternRhythm();
 
 private:
