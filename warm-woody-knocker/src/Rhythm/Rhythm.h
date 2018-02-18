@@ -4,7 +4,7 @@
 #include "Arduino.h"
 
 
-class RhythmParameter;
+class Parameter;
 
 
 class Rhythm {
@@ -14,9 +14,18 @@ public:
 	virtual String title() = 0;
 	virtual void resetState() = 0;
 	virtual void check(unsigned long now);
-	// virtual RhythmParameter *parameters() = 0;
-	virtual ~Rhythm();
 	
+	int getParametersCount();
+	Parameter *getParameter(int parameterIndex);
+
+	// Rhythm();
+	virtual ~Rhythm();
+
+protected:
+
+	int parametersCount;
+	Parameter **parameters;
+
 };
 
 
