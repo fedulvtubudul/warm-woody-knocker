@@ -1,10 +1,12 @@
 #include "PatternRhythm.h"
 
+#include "../Parameters/TempoParameter.h"
 
-PatternRhythm::PatternRhythm(Player *player):
+
+PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter):
 	Rhythm(player) {
 
-	this->setupParameters();
+	this->setupParameters(tempoParameter);
 	this->resetState();
 }
 
@@ -13,8 +15,12 @@ PatternRhythm::~PatternRhythm() {
 }
 
 
-void PatternRhythm::setupParameters() {
-	parametersCount = 0;
+void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
+	this->tempo = tempoParameter;
+
+	this->parametersCount = 1;
+	this->parameters = new Parameter*[this->parametersCount];
+	this->parameters[0] = tempoParameter;
 }
 
 

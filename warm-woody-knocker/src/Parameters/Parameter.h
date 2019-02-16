@@ -9,7 +9,7 @@ class Parameter {
 public:
 
 	virtual ~Parameter();
-	Parameter(String *title, void (*onChange)(Parameter *sender));
+	Parameter(String *title, void (*onChange)(Parameter *sender) = nullptr);
 
 	String *getTitle();
 	virtual void stepBy(int stepValue) = 0;

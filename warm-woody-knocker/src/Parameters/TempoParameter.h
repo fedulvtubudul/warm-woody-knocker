@@ -9,7 +9,7 @@ class TempoParameter : public IntegerParameter {
 
 public:
 
-	TempoParameter(void (*onChange)(TempoParameter *sender));
+	TempoParameter(void (*onChange)(TempoParameter *sender) = nullptr);
 	~TempoParameter();
 
 	unsigned long beatDuration;

@@ -5,6 +5,7 @@ SoundTrack::SoundTrack(uint8_t channelPin):
 	shouldStart(SoundLevel::no),
 	shouldStop(0) {
 
+	pinMode(channelPin, OUTPUT);
 }
 
 void SoundTrack::play(SoundLevel level) {
@@ -12,7 +13,6 @@ void SoundTrack::play(SoundLevel level) {
 }
 
 void SoundTrack::check(unsigned long now) {
-
 	if (shouldStart == SoundLevel::low) {
 		digitalWrite(channelPin, HIGH);
 		shouldStart = SoundLevel::no;

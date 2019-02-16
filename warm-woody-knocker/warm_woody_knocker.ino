@@ -155,7 +155,7 @@ void setupPlayer() {
 void setupRhythms() {
 	tempoParameter = makeTempoParameter();
 
-	rhythms[0] = new PatternRhythm(player);
+	rhythms[0] = new PatternRhythm(player, tempoParameter);
 	rhythms[1] = new LinearRhythm(player, tempoParameter);
 
 	currentRhythmIndex = 0;
@@ -182,29 +182,22 @@ EnumParameter *makeRhythmParameter() {
 
 	EnumParameter *parameter = new EnumParameter(
 			new String("RHYTHM"),
-			onRhythmChange,
 			RHYTHMS_COUNT,
 			titles,
-			0
+			0,
+			onRhythmChange
 		);
 
 	return parameter;
 }
 
+void onTempoChange(TempoParameter *sender) {
+	// valueChanged = true;
+}
+
 TempoParameter *makeTempoParameter() {
-	TempoParameter *parameter = new TempoParameter(nullptr);
+	TempoParameter *parameter = new TempoParameter(onTempoChange);
 	return parameter;
-}
-
-void drawValue() {
-//	char cs[16];
-//	sprintf(cs, "%d %d", positionX, positionY);
-//    u8g2.drawStr(30, 50, cs);
-}
-
-void drawCursor() {
-//	u8g2.drawPixel(0, 0);
-//	u8g2.drawPixel(positionX, positionY);
 }
 
 void loop() {
@@ -317,16 +310,13 @@ void printPendulum(uint8_t prevPosition, uint8_t newPosition) {
 }
 
 inline void printChanges(void) {
-  if (modeChanged) {
-    printMode();
-    printValue();
-    modeChanged = false;
-  }
-
-  if (valueChanged) {
-    printValue();
-    valueChanged = false;
-  }
+	if (modeChanged || valueChanged) {
+		clearLine(1);
+		printMode();
+		printValue();
+		modeChanged = false;
+		valueChanged = false;
+	}
 }
 
 void clearLine(uint8_t line) {
@@ -347,8 +337,6 @@ Parameter *currentParameter() {
 
 void printMode(void) {
 	String *title = currentParameter()->getTitle();
-
-	clearLine(1);
 	lcd.setCursor(0, 1);
 	lcd.print(*title);
 }

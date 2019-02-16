@@ -5,12 +5,12 @@ IntegerParameter::~IntegerParameter() {
 	
 }
 
-IntegerParameter::IntegerParameter(String *title, void (*onChange)(IntegerParameter *sender), int minValue, int maxValue, int initialValue) :
+IntegerParameter::IntegerParameter(String *title, int minValue, int maxValue, int initialValue, void (*onChange)(IntegerParameter *sender)) :
 	Parameter(title, onChange),
 	minValue(minValue),
 	maxValue(maxValue),
 	value(initialValue) {
-		
+	
 }
 
 void IntegerParameter::stepBy(int stepValue) {

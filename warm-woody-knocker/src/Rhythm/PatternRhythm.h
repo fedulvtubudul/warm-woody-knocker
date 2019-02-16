@@ -5,6 +5,7 @@
 #include "Rhythm.h"
 
 
+class TempoParameter;
 class Player;
 
 
@@ -19,12 +20,14 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	PatternRhythm(Player *player);
+	PatternRhythm(Player *player, TempoParameter *tempoParameter);
 	virtual ~PatternRhythm();
 
 private:
 
-	void setupParameters(void);
+	TempoParameter *tempo;
+
+	void setupParameters(TempoParameter *tempoParameter);
 
 };
 

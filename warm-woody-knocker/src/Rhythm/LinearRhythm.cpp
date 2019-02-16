@@ -63,7 +63,6 @@ void LinearRhythm::check(unsigned long now) {
 IntegerParameter *LinearRhythm::makeMeasureLengthParameter() {
 	IntegerParameter *parameter = new IntegerParameter(
 			new String("METER"),
-			nullptr,
 			minMeterValue,
 			maxMeterValue,
 			defaultMeterValue

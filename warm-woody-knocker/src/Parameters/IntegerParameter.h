@@ -9,7 +9,7 @@ class IntegerParameter : public Parameter {
 
 public:
 
-	IntegerParameter(String *title, void (*onChange)(IntegerParameter *sender), int minValue, int maxValue, int initialValue);
+	IntegerParameter(String *title, int minValue, int maxValue, int initialValue, void (*onChange)(IntegerParameter *sender) = nullptr);
 	~IntegerParameter();
 	
 	int getValue();

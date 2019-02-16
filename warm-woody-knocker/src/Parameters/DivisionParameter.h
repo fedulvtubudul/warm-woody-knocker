@@ -19,7 +19,7 @@ class DivisionParameter : public EnumParameter {
 
 public:
 
-	DivisionParameter(void (*onChange)(DivisionParameter *sender));
+	DivisionParameter(void (*onChange)(DivisionParameter *sender) = nullptr);
 	~DivisionParameter();
 
 	virtual void stepBy(int stepValue);
