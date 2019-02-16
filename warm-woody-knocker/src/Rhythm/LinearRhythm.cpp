@@ -48,12 +48,19 @@ void LinearRhythm::check(unsigned long now) {
 	unsigned long timeSinceBeatStart = now - beatStart;
 
 	unsigned long beatDuration = tempo->beatDuration;
-	unsigned long measureDuration = beatDuration * meter->getValue();
+	unsigned long beatCount = meter->getValue();
+	bool zeroBeat = beatCount == 0;
+	beatCount = zeroBeat ? 1 : beatCount;
+	unsigned long measureDuration = beatDuration * beatCount;
 
 	if (timeSinceMeasureStart >= measureDuration) {
 		measureStart = now;
 		beatStart = now;
-		player->play(soundHigh, SoundLevel::high);
+		if (zeroBeat) {
+			player->play(soundLow, SoundLevel::high);
+		} else {
+			player->play(soundHigh, SoundLevel::high);
+		}
 	} else if (timeSinceBeatStart >= beatDuration) {
 		beatStart = now;
 		player->play(soundLow, SoundLevel::high);
