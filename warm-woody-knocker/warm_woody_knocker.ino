@@ -7,6 +7,7 @@
 #include "src/Parameters/Parameter.h"
 #include "src/Parameters/EnumParameter.h"
 #include "src/Parameters/TempoParameter.h"
+#include "src/Parameters/RelativeParameter.h"
 
 #include "src/Rhythm/Rhythm.h"
 #include "src/Rhythm/PatternRhythm.h"
@@ -40,12 +41,6 @@ uint32_t const buttonClickThreshold = 40;
 uint32_t const buttonHoldThreshold = 2000;
 
 
-long const volumeValueMultiplier = 100;
-
-float const onbeatVolumeValueMultiplier = 1.5f;
-float const subdivVolumeValueMultiplier = 0.5f;
-
-
 #define RHYTHMS_COUNT 2
 Rhythm *rhythms[RHYTHMS_COUNT];
 int currentRhythmIndex;
@@ -76,13 +71,11 @@ int globalParametersCount;
 Parameter **globalParameters;
 EnumParameter *rhythmParameter;
 TempoParameter *tempoParameter;
+RelativeParameter *volumeParameter;
 int currentParameterIndex = 0;
 Parameter *currentParameter();
 
 Player *player;
-
-int volumeValue = 7;
-int const volumeValueMaxValue = 30;
 
 enum AccentMode {
     accentMode0,
@@ -149,7 +142,8 @@ void setup() {
 }
 
 void setupPlayer() {
-	player = new Player();
+	volumeParameter = makeVolumeParameter();
+	player = new Player(volumeParameter);
 }
 
 void setupRhythms() {
@@ -159,15 +153,21 @@ void setupRhythms() {
 	rhythms[1] = new LinearRhythm(player, tempoParameter);
 
 	currentRhythmIndex = 0;
+	
+	rhythmParameter = makeRhythmParameter();
 }
 
 
 void setupGlobalParameters() {
-	globalParametersCount = 1;
+	globalParametersCount = 2;
 	globalParameters = new Parameter*[globalParametersCount];
-
-	rhythmParameter = makeRhythmParameter();
 	globalParameters[0] = rhythmParameter;
+	globalParameters[1] = volumeParameter;
+}
+
+RelativeParameter *makeVolumeParameter() {
+	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), 20, 3);
+	return parameter;
 }
 
 void onRhythmChange(EnumParameter *sender) {

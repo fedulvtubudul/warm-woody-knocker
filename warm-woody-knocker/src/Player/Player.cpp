@@ -4,11 +4,11 @@
 #define HIGH_CHANNEL_PIN 9
 
 
-Player::Player() {
+Player::Player(RelativeParameter *volumeParameter) {
 	tracks = new SoundTrack*[soundChannelsCount];
 
-	tracks[soundLow] = new SoundTrack(LOW_CHANNEL_PIN);
-	tracks[soundHigh] = new SoundTrack(HIGH_CHANNEL_PIN);
+	tracks[soundLow] = new SoundTrack(LOW_CHANNEL_PIN, 9000, volumeParameter);
+	tracks[soundHigh] = new SoundTrack(HIGH_CHANNEL_PIN, 12000, volumeParameter);
 }
 
 Player::~Player() {

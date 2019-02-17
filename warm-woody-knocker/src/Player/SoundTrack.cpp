@@ -1,7 +1,11 @@
 #include "SoundTrack.h"
+#include "../Parameters/RelativeParameter.h"
 
-SoundTrack::SoundTrack(uint8_t channelPin):
+
+SoundTrack::SoundTrack(uint8_t channelPin, unsigned long refClickDuration, RelativeParameter *volumeParameter):
 	channelPin(channelPin),
+	refClickDuration(refClickDuration),
+	volume(volumeParameter),
 	shouldStart(SoundLevel::no),
 	shouldStop(0) {
 
@@ -16,11 +20,11 @@ void SoundTrack::check(unsigned long now) {
 	if (shouldStart == SoundLevel::low) {
 		digitalWrite(channelPin, HIGH);
 		shouldStart = SoundLevel::no;
-		shouldStop = now + 2000;
+		shouldStop = now + refClickDuration * volume->relativeValue;
 	} else if (shouldStart == SoundLevel::high) {
 		digitalWrite(channelPin, HIGH);
 		shouldStart = SoundLevel::no;
-		shouldStop = now + 1200;
+		shouldStop = now + refClickDuration * 0.75f * volume->relativeValue;
 	}
 
 	if (now >= shouldStop) {

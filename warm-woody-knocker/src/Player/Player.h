@@ -5,6 +5,9 @@
 #include "SoundTrack.h"
 
 
+class RelativeParameter;
+
+
 enum SoundChannel {
 	soundLow = 0,
 	soundHigh = 1,
@@ -17,7 +20,7 @@ class Player {
 
 public:
 
-	Player();
+	Player(RelativeParameter *volumeParameter);
 	virtual ~Player();
 
 	void check(unsigned long now);
