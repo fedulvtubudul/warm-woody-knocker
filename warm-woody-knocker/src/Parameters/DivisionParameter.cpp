@@ -8,10 +8,10 @@ DivisionParameter::~DivisionParameter() {
 DivisionParameter::DivisionParameter(void (*onChange)(DivisionParameter *sender)) :
 	EnumParameter(
 		new String("DIVISION"),
-		onChange,
 		divisionModesCount,
 		new String[divisionModesCount],
-		divisionMode1to4
+		divisionMode1to4,
+		onChange
 	) {
 	valueTitles[divisionMode1to4] = String("1/4");
 	valueTitles[divisionMode1to8] = String("1/8");

@@ -2,6 +2,11 @@
 #include "../Parameters/Parameter.h"
 
 
+Rhythm::Rhythm(Player *player):
+	player(player) {
+
+}
+
 Rhythm::~Rhythm() {
 
 }
