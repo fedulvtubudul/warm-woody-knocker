@@ -6,6 +6,7 @@
 
 
 class TempoParameter;
+class EnumParameter;
 class Player;
 
 
@@ -28,6 +29,9 @@ private:
 	TempoParameter *tempo;
 
 	void setupParameters(TempoParameter *tempoParameter);
+	EnumParameter *makePatternParameter();
+
+	unsigned long measureStart;
 
 };
 
