@@ -30,7 +30,11 @@ private:
 	void setupParameters(TempoParameter *tempoParameter);
 	EnumParameter *makePatternParameter();
 
+	EnumParameter *patternParameter;
+
 	unsigned long measureStart;
+	unsigned long beatStart;
+	unsigned long beatIndex;
 
 	int16_t patternsCount;
 	Pattern *patterns;

@@ -31,9 +31,11 @@ void PatternRhythm::setupPatterns() {
 void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
 
+	this->patternParameter = this->makePatternParameter();
+
 	this->parametersCount = 2;
 	this->parameters = new Parameter*[this->parametersCount];
-	this->parameters[0] = this->makePatternParameter();
+	this->parameters[0] = this->patternParameter;
 	this->parameters[1] = tempoParameter;
 }
 
@@ -44,11 +46,32 @@ String PatternRhythm::title() {
 
 void PatternRhythm::resetState() {
 	this->measureStart = 0;
+	this->beatStart = 0;
 	digitalWrite(LED_BUILTIN, LOW);
 }
 
 void PatternRhythm::check(unsigned long now) {
+	unsigned long timeSinceMeasureStart = now - measureStart;
+	unsigned long timeSinceBeatStart = now - beatStart;
 
+	int patternIndex = this->patternParameter->getRawValue();
+	Pattern pattern = this->patterns[patternIndex];
+
+	unsigned long beatDuration = tempo->beatDuration * 4 / pattern.meter;
+	unsigned long beatCount = pattern.length;
+	unsigned long measureDuration = beatDuration * beatCount;
+
+	if (timeSinceMeasureStart >= measureDuration) {
+		measureStart = now;
+		beatIndex = 0;
+	} 
+	
+	if (timeSinceBeatStart >= beatDuration) {
+		beatStart = now;
+		player->play(soundLow, pattern.lowChannelValues[beatIndex]);
+		player->play(soundHigh, pattern.highChannelValues[beatIndex]);
+		++beatIndex;
+	}
 }
 
 EnumParameter *PatternRhythm::makePatternParameter() {
