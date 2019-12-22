@@ -4,11 +4,13 @@
 #include "../Parameters/EnumParameter.h"
 
 #include "../Player/Player.h"
+#include "Pattern.h"
 
 
 PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter):
 	Rhythm(player) {
 
+	this->setupPatterns();
 	this->setupParameters(tempoParameter);
 	this->resetState();
 }
@@ -16,6 +18,14 @@ PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter):
 PatternRhythm::~PatternRhythm() {
 
 }
+
+void PatternRhythm::setupPatterns() {
+	this->patternsCount = 2;
+	this->patterns = new Pattern[this->patternsCount];
+	patterns[0] = makeClavePattern();
+	patterns[1] = makeSaiidiPattern();
+}
+
 
 
 void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
@@ -42,14 +52,14 @@ void PatternRhythm::check(unsigned long now) {
 }
 
 EnumParameter *PatternRhythm::makePatternParameter() {
-	int valuesCount = 2;
-	String *values = new String[valuesCount];
-	values[0] = String("Clave");
-	values[1] = String("Saiidi");
+	String *values = new String[this->patternsCount];
+	for (int16_t i = 0; i < this->patternsCount; ++i) {
+		values[i] = this->patterns[i].title;
+	}
 
 	EnumParameter *parameter = new EnumParameter(
 			new String("METER"),
-			2,
+			this->patternsCount,
 			values,
 			0
 		);
