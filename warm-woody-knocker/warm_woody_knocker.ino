@@ -109,7 +109,7 @@ void refreshBeepIntervals(void);
 void beepIfNeeded(void);
 
 uint8_t positionForPendulumState(uint8_t state);
-void movePendulumIfNeeded(void);
+void movePendulumIfNeeded(unsigned long currentTime);
 
 void buttonClickAction(void);
 void buttonHoldAction(void);
@@ -203,14 +203,10 @@ TempoParameter *makeTempoParameter() {
 void loop() {
 	unsigned long now = micros();
 	rhythms[currentRhythmIndex]->check(now);
-
-  movePendulumIfNeeded();
-
 	button->check();
 	encoder->check();
-	player->check(now);
-
-  printChanges();
+	// movePendulumIfNeeded(now);
+	printChanges();
 }
 
 
@@ -221,8 +217,7 @@ uint8_t pendulumPosition = PENDULUM_WIDTH;
 uint8_t const pendulumPositions = LCD_LINE_WIDTH - (PENDULUM_WIDTH - 1);
 uint8_t const pendulumStates = pendulumPositions * 2 - 2;
 
-void movePendulumIfNeeded() {
-  unsigned long currentTime = micros();
+void movePendulumIfNeeded(unsigned long currentTime) {
   unsigned long measureTime = currentTime - measureStart;
   unsigned long measureLength = BPM_TO_MICRO / tempo;
 

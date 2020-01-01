@@ -23,7 +23,6 @@ public:
 	Player(RelativeParameter *volumeParameter);
 	virtual ~Player();
 
-	void check(unsigned long now);
 	void play(SoundChannel sound, SoundLevel level);
 
 private:
