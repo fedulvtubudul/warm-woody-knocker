@@ -64,9 +64,6 @@ Parameter *currentParameter();
 Player *player;
 
 
-uint8_t positionForPendulumState(uint8_t state);
-void movePendulumIfNeeded(unsigned long currentTime);
-
 void buttonClickAction(void);
 void buttonHoldAction(void);
 void encoderSpinAction(SpinDirection direction);
@@ -75,8 +72,6 @@ void printChanges(void);
 void printMode(void);
 void printValue(void);
 void printAccentValue(void);
-void clearPendulum(uint8_t prevPosition, uint8_t newPosition);
-void printPendulum(uint8_t prevPosition, uint8_t newPosition);
 
 
 void setup() {
@@ -154,82 +149,7 @@ void loop() {
 	rhythms[currentRhythmIndex]->check(now);
 	button->check();
 	encoder->check();
-	// movePendulumIfNeeded(now);
 	printChanges();
-}
-
-
-#define PENDULUM_LINE 0
-#define PENDULUM_WIDTH 4
-uint8_t pendulumPosition = PENDULUM_WIDTH;
-
-uint8_t const pendulumPositions = LCD_LINE_WIDTH - (PENDULUM_WIDTH - 1);
-uint8_t const pendulumStates = pendulumPositions * 2 - 2;
-
-void movePendulumIfNeeded(unsigned long currentTime) {
-  unsigned long measureTime = currentTime - measureStart;
-  unsigned long measureLength = BPM_TO_MICRO / tempo;
-
-  unsigned long pendulumMoveInterval = 2 * (float)measureLength / (float)pendulumStates;
-	
-  uint8_t neededState = measureTime / pendulumMoveInterval;
-  uint8_t neededPosition = positionForPendulumState(neededState);
-	
-  if (pendulumPosition != neededPosition) {
-    clearPendulum(pendulumPosition, neededPosition);
-	printPendulum(pendulumPosition, neededPosition);
-	pendulumPosition = neededPosition;
-  }
-}
-
-uint8_t positionForPendulumState(uint8_t state) {
-  state = state % pendulumStates;
-  bool reverse = state >= pendulumPositions;
-	
-  uint8_t position;
-  if (reverse) {
-    position = pendulumStates - state;
-  } else {
-    position = state;
-  }
-	
-  return position;
-}
-
-void clearPendulum(uint8_t prevPosition, uint8_t newPosition) {
-  // -->
-  if (prevPosition < newPosition) {
-	  lcd.setCursor(prevPosition, PENDULUM_LINE);
-	  for (uint8_t i = prevPosition; i < newPosition; ++i) {
-	    lcd.print((char)32);
-	  }
-  }
-	
-  // <--
-  else if (prevPosition > newPosition) {
-	  lcd.setCursor(newPosition + PENDULUM_WIDTH, PENDULUM_LINE);
-	  for (uint8_t i = newPosition; i < prevPosition; ++i) {
-	    lcd.print((char)32);
-	  }
-  }
-}
-
-void printPendulum(uint8_t prevPosition, uint8_t newPosition) {
-  // -->
-  if (prevPosition < newPosition) {
-	  lcd.setCursor(prevPosition + PENDULUM_WIDTH, PENDULUM_LINE);
-	  for (uint8_t i = prevPosition; i < newPosition; ++i) {
-	    lcd.print((char)255);
-	  }
-  }
-	
-  // <--
-  else if (prevPosition > newPosition) {
-	  lcd.setCursor(newPosition, PENDULUM_LINE);
-	  for (uint8_t i = newPosition; i < prevPosition; ++i) {
-	    lcd.print((char)255);
-	  }
-  }
 }
 
 inline void printChanges(void) {
