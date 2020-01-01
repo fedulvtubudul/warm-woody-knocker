@@ -6,16 +6,15 @@
 
 
 class TempoParameter;
+class EnumParameter;
 class Player;
+struct Pattern;
 
 
 class PatternRhythm: public Rhythm {
 
 public:
 		
-	uint16_t patternLength;
-	uint8_t *patternValues;
-
 	virtual String title();
 	virtual void resetState();
 	virtual void check(unsigned long now);
@@ -27,7 +26,18 @@ private:
 
 	TempoParameter *tempo;
 
+	void setupPatterns();
 	void setupParameters(TempoParameter *tempoParameter);
+	EnumParameter *makePatternParameter();
+
+	EnumParameter *patternParameter;
+
+	unsigned long measureStart;
+	unsigned long beatStart;
+	unsigned long beatIndex;
+
+	int16_t patternsCount;
+	Pattern *patterns;
 
 };
 
