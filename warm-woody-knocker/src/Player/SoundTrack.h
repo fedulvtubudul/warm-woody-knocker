@@ -18,17 +18,14 @@ class SoundTrack {
 
 public:
 
-	SoundTrack(uint8_t channelPin, unsigned long refClickDuration, RelativeParameter *volumeParameter);
+	SoundTrack(uint8_t channelPin, float refClickDuration, RelativeParameter *volumeParameter);
 
-	void check(unsigned long now);
 	void play(SoundLevel level);
 
 private:
 
 	uint8_t channelPin;
-	SoundLevel shouldStart;
-	unsigned long shouldStop;
-	unsigned long refClickDuration;
+	float refClickDuration;
 	RelativeParameter *volume;
 };
 

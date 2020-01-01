@@ -15,12 +15,6 @@ Player::~Player() {
 
 }
 
-void Player::check(unsigned long now) {
-	for (int i = 0; i < soundChannelsCount; ++i) {
-		tracks[i]->check(now);
-	}
-}
-
 void Player::play(SoundChannel sound, SoundLevel level) {
 	tracks[sound]->play(level);
 }
