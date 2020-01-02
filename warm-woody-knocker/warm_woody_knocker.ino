@@ -14,12 +14,14 @@
 #include "src/Rhythm/LinearRhythm.h"
 
 #include "src/Player/Player.h"
+#include "src/Animation/Animation.h"
 
 
 #define LCD_LINE_WIDTH 16
 #define LCD_LINES_COUNT 2
 
 
+Animation *animation;
 Encoder *encoder;
 Button *button;
 uint8_t const encoderPinA = 10;
@@ -75,14 +77,13 @@ void printAccentValue(void);
 
 
 void setup() {
+	lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
+	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
+	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
+	animation = new Animation(&lcd, 0, LCD_LINE_WIDTH);
 	setupPlayer();
 	setupRhythms();
 	setupGlobalParameters();
-
-  lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
-
-	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
-	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
 }
 
 void setupPlayer() {
@@ -92,6 +93,7 @@ void setupPlayer() {
 
 void setupRhythms() {
 	tempoParameter = makeTempoParameter();
+	onTempoChange(tempoParameter);
 
 	rhythms[0] = new PatternRhythm(player, tempoParameter);
 	rhythms[1] = new LinearRhythm(player, tempoParameter);
@@ -136,7 +138,7 @@ EnumParameter *makeRhythmParameter() {
 }
 
 void onTempoChange(TempoParameter *sender) {
-	// valueChanged = true;
+	animation->setTempo(sender->beatDuration);
 }
 
 TempoParameter *makeTempoParameter() {
@@ -147,6 +149,7 @@ TempoParameter *makeTempoParameter() {
 void loop() {
 	unsigned long now = micros();
 	rhythms[currentRhythmIndex]->check(now);
+	animation->check(now);
 	button->check();
 	encoder->check();
 	printChanges();
