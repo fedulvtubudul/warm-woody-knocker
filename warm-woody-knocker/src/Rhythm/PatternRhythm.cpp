@@ -62,21 +62,22 @@ void PatternRhythm::check(unsigned long now) {
 	unsigned long beatCount = pattern.length;
 	unsigned long measureDuration = beatDuration * beatCount;
 
-	if (timeSinceMeasureStart >= measureDuration) {
-		measureStart = now;
-		beatIndex = 0;
-	} 
-	
 	if (timeSinceBeatStart >= beatDuration) {
+		if (timeSinceMeasureStart >= measureDuration) {
+			beatIndex = 0;
+			measureStart = now;
+			animationBeatStart = now;
+		}
+
 		beatStart = now;
 		player->play(soundLow, pattern.lowChannelValues[beatIndex]);
 		player->play(soundHigh, pattern.highChannelValues[beatIndex]);
 		++beatIndex;
-	}
 
-	if (timeSinceAnimationBeatStart >= animationBeatDuration) {
-		animationBeatStart = now;
-		animation->step();
+		if (timeSinceAnimationBeatStart >= animationBeatDuration) {
+			animationBeatStart = now;
+			animation->step();
+		}
 	}
 }
 
