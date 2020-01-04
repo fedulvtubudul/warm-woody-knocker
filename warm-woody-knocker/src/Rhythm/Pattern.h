@@ -14,6 +14,7 @@ struct Pattern {
 
 Pattern makeClavePattern();
 Pattern makeBembePattern();
+Pattern makeSongoPattern();
 Pattern makeSaiidiPattern();
 Pattern makeSwing3Pattern();
 Pattern makeSwing4Pattern();
