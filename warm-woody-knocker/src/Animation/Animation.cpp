@@ -12,17 +12,9 @@ Animation::Animation(LiquidCrystal *lcd, int screenLine, int screenWidth):
 	printState(currentState);
 }
 
-void Animation::check(unsigned long now) {
-	unsigned long timeSinceBeatStart = now - beatStart;
-	if (timeSinceBeatStart >= beatDuration) {
-		beatStart = now;
+void Animation::step() {
 		currentState = (currentState + 1) % 2;
 		printState(currentState);
-	}
-}
-
-void Animation::setTempo(unsigned long beatDuration) {
-	this->beatDuration = beatDuration;
 }
 
 void Animation::printState(int state) {

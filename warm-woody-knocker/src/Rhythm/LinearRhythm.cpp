@@ -5,6 +5,7 @@
 #include "../Parameters/DivisionParameter.h"
 
 #include "../Player/Player.h"
+#include "../Animation/Animation.h"
 
 
 static int const minMeterValue = 0;
@@ -12,8 +13,9 @@ static int const maxMeterValue = 16;
 static int const defaultMeterValue = 4;
 
 
-LinearRhythm::LinearRhythm(Player *player, TempoParameter *tempoParameter):
-	Rhythm(player) {
+LinearRhythm::LinearRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation):
+	Rhythm(player),
+	animation(animation) {
 
 	this->setupParameters(tempoParameter);
 	this->resetState();
@@ -40,7 +42,6 @@ String LinearRhythm::title() {
 
 void LinearRhythm::resetState() {
 	this->measureStart = 0;
-	digitalWrite(LED_BUILTIN, LOW);
 }
 
 void LinearRhythm::check(unsigned long now) {
@@ -61,9 +62,11 @@ void LinearRhythm::check(unsigned long now) {
 		} else {
 			player->play(soundHigh, SoundLevel::high);
 		}
+		animation->step();
 	} else if (timeSinceBeatStart >= beatDuration) {
 		beatStart = now;
 		player->play(soundLow, SoundLevel::high);
+		animation->step();
 	}
 }
 

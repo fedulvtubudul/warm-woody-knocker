@@ -95,8 +95,8 @@ void setupRhythms() {
 	tempoParameter = makeTempoParameter();
 	onTempoChange(tempoParameter);
 
-	rhythms[0] = new PatternRhythm(player, tempoParameter);
-	rhythms[1] = new LinearRhythm(player, tempoParameter);
+	rhythms[0] = new PatternRhythm(player, tempoParameter, animation);
+	rhythms[1] = new LinearRhythm(player, tempoParameter, animation);
 
 	currentRhythmIndex = 0;
 	
@@ -138,7 +138,6 @@ EnumParameter *makeRhythmParameter() {
 }
 
 void onTempoChange(TempoParameter *sender) {
-	animation->setTempo(sender->beatDuration);
 }
 
 TempoParameter *makeTempoParameter() {
@@ -149,7 +148,6 @@ TempoParameter *makeTempoParameter() {
 void loop() {
 	unsigned long now = micros();
 	rhythms[currentRhythmIndex]->check(now);
-	animation->check(now);
 	button->check();
 	encoder->check();
 	printChanges();

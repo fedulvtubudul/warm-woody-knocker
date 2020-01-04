@@ -9,13 +9,10 @@ class LiquidCrystal;
 class Animation {
 	public:
 		Animation::Animation(LiquidCrystal *lcd, int screenLine, int screenWidth);
-		void check(unsigned long now);
-		void setTempo(unsigned long beatDuration);
+		void step();
 		
 	private:
 		LiquidCrystal *lcd;
-		unsigned long beatDuration;
-		unsigned long beatStart;
 		int currentState;
 		int screenLine;
 		int screenWidth;
