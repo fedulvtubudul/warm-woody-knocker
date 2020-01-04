@@ -14,5 +14,7 @@ struct Pattern {
 
 Pattern makeClavePattern();
 Pattern makeSaiidiPattern();
+Pattern makeSwing3Pattern();
+Pattern makeSwing4Pattern();
 
 #endif
