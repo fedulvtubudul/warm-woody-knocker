@@ -28,11 +28,12 @@ LinearRhythm::~LinearRhythm() {
 void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
 	this->meter = makeMeasureLengthParameter();
+	this->division = new DivisionParameter(nullptr);
 
 	this->parametersCount = 3;
 	this->parameters = new Parameter*[this->parametersCount];
 	this->parameters[0] = meter;
-	this->parameters[1] = new DivisionParameter(nullptr);
+	this->parameters[1] = division;
 	this->parameters[2] = tempoParameter;
 }
 
@@ -42,11 +43,14 @@ String LinearRhythm::title() {
 
 void LinearRhythm::resetState() {
 	this->measureStart = 0;
+	this->beatStart = 0;
+	this->subBeatStart = 0;
 }
 
 void LinearRhythm::check(unsigned long now) {
 	unsigned long timeSinceMeasureStart = now - measureStart;
 	unsigned long timeSinceBeatStart = now - beatStart;
+	unsigned long timeSinceSubBeatStart = now - subBeatStart;
 
 	unsigned long beatDuration = tempo->beatDuration;
 	unsigned long beatCount = meter->getValue();
@@ -54,19 +58,23 @@ void LinearRhythm::check(unsigned long now) {
 	beatCount = zeroBeat ? 1 : beatCount;
 	unsigned long measureDuration = beatDuration * beatCount;
 
-	if (timeSinceMeasureStart >= measureDuration) {
-		measureStart = now;
-		beatStart = now;
-		if (zeroBeat) {
-			player->play(soundLow, SoundLevel::high);
+	if (timeSinceBeatStart >= beatDuration) {
+		if (timeSinceMeasureStart >= measureDuration) {
+			measureStart = now;
+			if (zeroBeat) {
+				player->play(soundLow, SoundLevel::high);
+			} else {
+				player->play(soundHigh, SoundLevel::high);
+			}
 		} else {
-			player->play(soundHigh, SoundLevel::high);
+			player->play(soundLow, SoundLevel::high);
 		}
-		animation->step();
-	} else if (timeSinceBeatStart >= beatDuration) {
 		beatStart = now;
-		player->play(soundLow, SoundLevel::high);
+		subBeatStart = now;
 		animation->step();
+	} else if (timeSinceSubBeatStart >= division->subBeatDuration(beatDuration)) {
+		subBeatStart = now;
+		player->play(soundLow, SoundLevel::low);
 	}
 }
 

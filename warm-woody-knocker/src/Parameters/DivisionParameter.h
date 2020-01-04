@@ -23,6 +23,7 @@ public:
 	~DivisionParameter();
 
 	virtual void stepBy(int stepValue);
+	unsigned long subBeatDuration(unsigned long beatDuration);
 
 private:
 
