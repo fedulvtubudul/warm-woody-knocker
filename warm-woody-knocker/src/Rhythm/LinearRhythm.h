@@ -6,6 +6,7 @@
 
 
 class TempoParameter;
+class DivisionParameter;
 class IntegerParameter;
 class EnumParameter;
 class Player;
@@ -27,14 +28,15 @@ private:
 
 	void setupParameters(TempoParameter *tempoParameter);
 	IntegerParameter *makeMeasureLengthParameter();
-	EnumParameter *LinearRhythm::makeDivisionParameter();
 
 	TempoParameter *tempo;
 	IntegerParameter *meter;
+	DivisionParameter *division;
 	Animation *animation;
 
 	unsigned long measureStart;
 	unsigned long beatStart;
+	unsigned long subBeatStart;
 
 };
 
