@@ -8,6 +8,7 @@
 class TempoParameter;
 class EnumParameter;
 class Player;
+class Animation;
 struct Pattern;
 
 
@@ -19,7 +20,7 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	PatternRhythm(Player *player, TempoParameter *tempoParameter);
+	PatternRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation);
 	virtual ~PatternRhythm();
 
 private:
@@ -31,10 +32,12 @@ private:
 	EnumParameter *makePatternParameter();
 
 	EnumParameter *patternParameter;
+	Animation *animation;
 
 	unsigned long measureStart;
 	unsigned long beatStart;
 	unsigned long beatIndex;
+	unsigned long animationBeatStart;
 
 	int16_t patternsCount;
 	Pattern *patterns;

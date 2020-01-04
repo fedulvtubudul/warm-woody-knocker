@@ -3,12 +3,14 @@
 #include "../Parameters/TempoParameter.h"
 #include "../Parameters/EnumParameter.h"
 
+#include "../Animation/Animation.h"
 #include "../Player/Player.h"
 #include "Pattern.h"
 
 
-PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter):
-	Rhythm(player) {
+PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation):
+	Rhythm(player),
+	animation(animation) {
 
 	this->setupPatterns();
 	this->setupParameters(tempoParameter);
@@ -26,8 +28,6 @@ void PatternRhythm::setupPatterns() {
 	patterns[1] = makeSaiidiPattern();
 }
 
-
-
 void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
 
@@ -39,7 +39,6 @@ void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->parameters[1] = tempoParameter;
 }
 
-
 String PatternRhythm::title() {
 	return String("Pattern");
 }
@@ -47,16 +46,18 @@ String PatternRhythm::title() {
 void PatternRhythm::resetState() {
 	this->measureStart = 0;
 	this->beatStart = 0;
-	digitalWrite(LED_BUILTIN, LOW);
+	this->animationBeatStart = 0;
 }
 
 void PatternRhythm::check(unsigned long now) {
 	unsigned long timeSinceMeasureStart = now - measureStart;
 	unsigned long timeSinceBeatStart = now - beatStart;
+	unsigned long timeSinceAnimationBeatStart = now - animationBeatStart;
 
 	int patternIndex = this->patternParameter->getRawValue();
 	Pattern pattern = this->patterns[patternIndex];
 
+	unsigned long animationBeatDuration = tempo->beatDuration;
 	unsigned long beatDuration = tempo->beatDuration * 4 / pattern.meter;
 	unsigned long beatCount = pattern.length;
 	unsigned long measureDuration = beatDuration * beatCount;
@@ -71,6 +72,11 @@ void PatternRhythm::check(unsigned long now) {
 		player->play(soundLow, pattern.lowChannelValues[beatIndex]);
 		player->play(soundHigh, pattern.highChannelValues[beatIndex]);
 		++beatIndex;
+	}
+
+	if (timeSinceAnimationBeatStart >= animationBeatDuration) {
+		animationBeatStart = now;
+		animation->step();
 	}
 }
 

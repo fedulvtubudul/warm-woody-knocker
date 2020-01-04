@@ -9,6 +9,7 @@ class TempoParameter;
 class IntegerParameter;
 class EnumParameter;
 class Player;
+class Animation;
 
 
 class LinearRhythm: public Rhythm {
@@ -19,7 +20,7 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	LinearRhythm(Player *player, TempoParameter *tempoParameter);
+	LinearRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation);
 	virtual ~LinearRhythm();
 
 private:
@@ -30,6 +31,7 @@ private:
 
 	TempoParameter *tempo;
 	IntegerParameter *meter;
+	Animation *animation;
 
 	unsigned long measureStart;
 	unsigned long beatStart;
