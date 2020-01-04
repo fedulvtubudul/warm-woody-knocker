@@ -22,12 +22,13 @@ PatternRhythm::~PatternRhythm() {
 }
 
 void PatternRhythm::setupPatterns() {
-	this->patternsCount = 4;
+	this->patternsCount = 5;
 	this->patterns = new Pattern[this->patternsCount];
 	patterns[0] = makeClavePattern();
-	patterns[1] = makeSaiidiPattern();
-	patterns[2] = makeSwing3Pattern();
-	patterns[3] = makeSwing4Pattern();
+	patterns[1] = makeBembePattern();
+	patterns[2] = makeSaiidiPattern();
+	patterns[3] = makeSwing3Pattern();
+	patterns[4] = makeSwing4Pattern();
 }
 
 void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {

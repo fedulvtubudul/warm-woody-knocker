@@ -13,6 +13,7 @@ struct Pattern {
 };
 
 Pattern makeClavePattern();
+Pattern makeBembePattern();
 Pattern makeSaiidiPattern();
 Pattern makeSwing3Pattern();
 Pattern makeSwing4Pattern();

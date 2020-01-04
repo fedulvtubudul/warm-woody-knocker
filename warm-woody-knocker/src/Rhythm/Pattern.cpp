@@ -51,6 +51,48 @@ Pattern makeClavePattern() {
 	return pattern;
 }
 
+Pattern makeBembePattern() {
+	int length = 12;
+
+	Pattern pattern = {
+		title: String("Bembe"),
+		meter: 12,
+		length: length,
+		lowChannelValues: new SoundLevel[length],
+		highChannelValues: new SoundLevel[length]
+	};
+
+	int i = 0;
+	pattern.lowChannelValues[i++] = SoundLevel::no;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::no;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::no;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::no;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::no;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+	pattern.lowChannelValues[i++] = SoundLevel::low;
+
+	i = 0;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+	pattern.highChannelValues[i++] = SoundLevel::no;
+
+	return pattern;
+}
+
 Pattern makeSaiidiPattern() {
 	int length = 8;
 
