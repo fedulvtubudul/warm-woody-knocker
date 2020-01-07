@@ -7,8 +7,8 @@
 Player::Player(RelativeParameter *volumeParameter) {
 	tracks = new SoundTrack*[soundChannelsCount];
 
-	tracks[soundLow] = new SoundTrack(LOW_CHANNEL_PIN, 9000, volumeParameter);
-	tracks[soundHigh] = new SoundTrack(HIGH_CHANNEL_PIN, 12000, volumeParameter);
+	tracks[soundLow] = new SoundTrack(LOW_CHANNEL_PIN, 4500, volumeParameter);
+	tracks[soundHigh] = new SoundTrack(HIGH_CHANNEL_PIN, 6000, volumeParameter);
 }
 
 Player::~Player() {

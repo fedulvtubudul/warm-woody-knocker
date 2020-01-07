@@ -3,7 +3,7 @@
 
 
 TempoParameter::TempoParameter(void (*onChange)(TempoParameter *sender)) : 
-	IntegerParameter(new String("TEMPO"), 15, 300, 60, onChange) {
+	IntegerParameter(new String("TEMPO"), 15, 300, 90, onChange) {
 	
 	this->beatDuration = beatDurationFromBPM(this->value);
 }
