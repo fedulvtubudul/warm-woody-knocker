@@ -95,8 +95,8 @@ void setupRhythms() {
 	tempoParameter = makeTempoParameter();
 	onTempoChange(tempoParameter);
 
-	rhythms[0] = new PatternRhythm(player, tempoParameter, animation);
-	rhythms[1] = new LinearRhythm(player, tempoParameter, animation);
+	rhythms[0] = new LinearRhythm(player, tempoParameter, animation);
+	rhythms[1] = new PatternRhythm(player, tempoParameter, animation);
 
 	currentRhythmIndex = 0;
 	
@@ -112,7 +112,7 @@ void setupGlobalParameters() {
 }
 
 RelativeParameter *makeVolumeParameter() {
-	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), 20, 3);
+	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), 20, 6);
 	return parameter;
 }
 
