@@ -146,8 +146,10 @@ TempoParameter *makeTempoParameter() {
 }
 
 void loop() {
-	unsigned long now = micros();
-	rhythms[currentRhythmIndex]->check(now);
+	if (running) {
+		unsigned long now = micros();
+		rhythms[currentRhythmIndex]->check(now);
+	}
 	button->check();
 	encoder->check();
 	printChanges();
