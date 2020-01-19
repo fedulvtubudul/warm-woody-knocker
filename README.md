@@ -16,11 +16,49 @@
 
 ## Building the project
 
-TODO
+A prototype was developed within a day in Arduino IDE, and it naturally became a 1000+ LOC single-file mess. That was an obvious signal for me to run away and rework it from scrach keeping in mind all known best practices.
+
+The project is being developed in [VSCode](https://code.visualstudio.com/) with [Arduino](https://marketplace.visualstudio.com/items?itemName=vsciot-vscode.vscode-arduino) plugin. You can build and upload the sketch via Arduino IDE, but the process of development is such a pain without all the features and tools you used to see in a modern IDE, that's why I highly recommend VSCode. To get started with using VSCode for Arduino development, check one of these: [[one]](https://learn.sparkfun.com/tutorials/efficient-arduino-programming-with-arduino-cli-and-visual-studio-code/all), [[two]](https://medium.com/home-wireless/use-visual-studio-code-for-arduino-2d0cf4c1760b).
+
+If your hardware is close enough to the original [schematics](##Schematics), you may just build the project as-is. If not, some [configuration](###Configuration) my be needed.
+
+There are just two external dependenciaes, that must be pre-installed before building the project. They are `Arduino` and `LiquidCrystal`. If you have Arduino IDE installed, both of them should be already available. To make sure about the second, use "Manage Libraries" menu in Arduino IDE, or "Arduino: Library Manager" command in VSCode.
 
 ### Configuration
 
-TODO
+Configure your display size. Currently only 2-line text-based HD44780-compatible displays are supported (via LiquidCrystal). One line is used for animation and another one for toggling and configuration of parameters. Bigger displays can be adopted easily.
+
+```cpp
+uint8_t const lcdLineWidth = 16;
+uint8_t const lcdLinesCount = 2;
+```
+
+Set respective pins you use to connect peripherals:
+
+```cpp
+// ==== warm_woody_knocker.ino ====
+
+uint8_t const encoderPinA = 10;            // Arduino digital IO pin connected to SW1 A pin
+uint8_t const encoderPinB = 11;            // Arduino digital IO pin connected to SW1 B pin
+uint8_t const buttonPin = 12;              // Arduino digital IO pin connected to SW1 S2 pin
+
+//                RS   E  D4  D5  D6  D7   // DS1 pin
+LiquidCrystal lcd( 7,  6,  5,  4,  3,  2); // Arduino digital IO pin
+
+// ==== Player.cpp ====
+
+uint8_t const lowChannelPin = 8;           // Arduino digital IO pin connected to Q1 gate
+uint8_t const highChannelPin = 9;          // Arduino digital IO pin connected to Q2 gate
+```
+
+If you have instability issues with the button or rotary encoder, try fine-tuning debounce thresholds values. Keep in mind, that by increasing these values, you limit the maximum supported speed of encoder rotation / button clicking.
+
+```cpp
+// ==== warm_woody_knocker.ino ====
+
+uint32_t const spinThreshold = 5;
+uint32_t const buttonClickThreshold = 40;
+```
 
 ## Hardware part
 
