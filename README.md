@@ -95,3 +95,5 @@ Electromagnetic actuators (push type) are pointed to one of the box walls. Havin
 * Adjustable swing factor
 
 * Better animations without compromising playback accuracy
+
+* Support graphical displays
