@@ -14,6 +14,20 @@
 
 * Volume adjustment (TODO: wiki page). Level range is quite wide in theory, but not the whole range gives stable result, because of mechanics instability.
 
+## Usage
+
+There is a cycled list of parameters which can be toggled with button press. This list looks flat from user's perspective, but actually some parameters are global, and some are rhytms-specific.
+
+Parameter scope | RHYTHM set to Linear | RHYTHM set to Pattern
+----------------|----------------------|----------------------
+Global          | RHYTHM (Linear)      | RHYTHM (Pattern)
+Global          | VOLUME (0 – 20)      | VOLUME (0 – 20)
+Shared          | TEMPO (15 – 300)     | TEMPO (15 – 300)
+Rhythm-specific | METER (0 – 16)       | PATTERN (TODO: wiki page)
+Rhythm-specific | DIVISION (4, 8, 16)  |
+
+Long button press starts and stops the playback.
+
 ## Building the project
 
 A prototype was developed within a day in Arduino IDE, and it naturally became a 1000+ LOC single-file mess. That was an obvious signal for me to run away and rework it from scrach keeping in mind all known best practices.
