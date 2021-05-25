@@ -15,6 +15,7 @@
 
 #include "src/Player/Player.h"
 #include "src/Animation/Animation.h"
+#include "src/Display/CustomCharacters.h"
 
 
 #define LCD_LINE_WIDTH 16
@@ -77,6 +78,7 @@ void printAccentValue(void);
 
 
 void setup() {
+	lcd.createChar(millisecondCharacter.lcdAlias, millisecondCharacter.glyphData);
 	lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
 	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
 	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
@@ -189,7 +191,7 @@ void printMode(void) {
 
 void printValue() {
 	String value = currentParameter()->printableValue();
-
+	value.replace(millisecondCharacter.stringAlias, millisecondCharacter.lcdAlias);
 	lcd.setCursor(LCD_LINE_WIDTH - value.length(), 1);
 	lcd.print(value);
 }
