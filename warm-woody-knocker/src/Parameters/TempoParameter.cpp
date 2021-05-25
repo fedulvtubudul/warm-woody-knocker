@@ -1,5 +1,6 @@
 #include "TempoParameter.h"
 #include "../Time/TimeConversion.h"
+#include "../Display/CustomCharacters.h"
 
 
 TempoParameter::TempoParameter(void (*onChange)(TempoParameter *sender)) : 
@@ -14,6 +15,10 @@ void TempoParameter::notify() {
 	IntegerParameter::notify();
 }
 
-TempoParameter::~TempoParameter() {
-	
+String TempoParameter::printableValue() {
+	float msValue = 60000.0f / float(value);
+	return String(value) + String("/") + String(msValue, 1) + String(millisecondCharacter.stringAlias);
+}
+
+TempoParameter::~TempoParameter() {	
 }
