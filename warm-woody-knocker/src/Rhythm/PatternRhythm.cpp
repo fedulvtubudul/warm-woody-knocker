@@ -6,9 +6,11 @@
 #include "../Animation/Animation.h"
 #include "../Player/Player.h"
 #include "Pattern.h"
+#include "../Storage/StoredParameter.h"
 
 
-PatternRhythm::PatternRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation):
+PatternRhythm::PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation):
+	storage(storage),
 	Rhythm(player),
 	animation(animation) {
 
@@ -93,6 +95,8 @@ EnumParameter *PatternRhythm::makePatternParameter() {
 
 	EnumParameter *parameter = new EnumParameter(
 			new String("METER"),
+			storage,
+			storedParameterMeter,
 			this->patternsCount,
 			values,
 			0

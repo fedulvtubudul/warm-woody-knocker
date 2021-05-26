@@ -6,9 +6,11 @@ DivisionParameter::~DivisionParameter() {
 	
 }
 
-DivisionParameter::DivisionParameter(void (*onChange)(DivisionParameter *sender)) :
+DivisionParameter::DivisionParameter(Storage *storage, void (*onChange)(DivisionParameter *sender)) :
 	EnumParameter(
 		new String("DIVISION"),
+		storage,
+		storedParameterDivision,
 		divisionModesCount,
 		new String[divisionModesCount],
 		divisionMode1to4,

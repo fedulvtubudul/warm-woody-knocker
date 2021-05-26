@@ -16,6 +16,7 @@
 #include "src/Player/Player.h"
 #include "src/Animation/Animation.h"
 #include "src/Display/CustomCharacters.h"
+#include "src/Storage/Storage.h"
 
 
 #define LCD_LINE_WIDTH 16
@@ -25,6 +26,7 @@
 Animation *animation;
 Encoder *encoder;
 Button *button;
+Storage *storage;
 uint8_t const encoderPinA = 10;
 uint8_t const encoderPinB = 11;
 uint8_t const buttonPin = 12;
@@ -83,6 +85,7 @@ void setup() {
 	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
 	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
 	animation = new Animation(&lcd, 0, LCD_LINE_WIDTH);
+	storage = new Storage();
 	setupPlayer();
 	setupRhythms();
 	setupGlobalParameters();
@@ -97,8 +100,8 @@ void setupRhythms() {
 	tempoParameter = makeTempoParameter();
 	onTempoChange(tempoParameter);
 
-	rhythms[0] = new LinearRhythm(player, tempoParameter, animation);
-	rhythms[1] = new PatternRhythm(player, tempoParameter, animation);
+	rhythms[0] = new LinearRhythm(storage, player, tempoParameter, animation);
+	rhythms[1] = new PatternRhythm(storage, player, tempoParameter, animation);
 
 	currentRhythmIndex = 0;
 	
@@ -114,7 +117,7 @@ void setupGlobalParameters() {
 }
 
 RelativeParameter *makeVolumeParameter() {
-	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), 20, 6);
+	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), storage, storedParameterVolume, 20, 6);
 	return parameter;
 }
 
@@ -130,6 +133,8 @@ EnumParameter *makeRhythmParameter() {
 
 	EnumParameter *parameter = new EnumParameter(
 			new String("RHYTHM"),
+			storage,
+			storedParameterRhythm,
 			RHYTHMS_COUNT,
 			titles,
 			0,
@@ -143,7 +148,7 @@ void onTempoChange(TempoParameter *sender) {
 }
 
 TempoParameter *makeTempoParameter() {
-	TempoParameter *parameter = new TempoParameter(onTempoChange);
+	TempoParameter *parameter = new TempoParameter(storage, onTempoChange);
 	return parameter;
 }
 
