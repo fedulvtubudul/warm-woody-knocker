@@ -8,7 +8,7 @@ class LiquidCrystal;
 
 class Animation {
 	public:
-		Animation::Animation(LiquidCrystal *lcd, int screenLine, int screenWidth);
+		Animation(LiquidCrystal *lcd, int screenLine, int screenWidth);
 		void step();
 		
 	private:
