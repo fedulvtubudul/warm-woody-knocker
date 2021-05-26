@@ -5,11 +5,14 @@
 #include "IntegerParameter.h"
 
 
+class Storage;
+
+
 class TempoParameter : public IntegerParameter {
 
 public:
 
-	TempoParameter(void (*onChange)(TempoParameter *sender) = nullptr);
+	TempoParameter(Storage *storage, void (*onChange)(TempoParameter *sender) = nullptr);
 	~TempoParameter();
 
 	virtual String printableValue();

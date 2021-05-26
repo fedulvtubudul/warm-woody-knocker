@@ -3,8 +3,8 @@
 #include "../Display/CustomCharacters.h"
 
 
-TempoParameter::TempoParameter(void (*onChange)(TempoParameter *sender)) : 
-	IntegerParameter(new String("TEMPO"), 15, 300, 90, onChange) {
+TempoParameter::TempoParameter(Storage *storage, void (*onChange)(TempoParameter *sender)) : 
+	IntegerParameter(new String("TEMPO"), storage, storedParameterTempo, 15, 300, 90, onChange) {
 	
 	this->beatDuration = beatDurationFromBPM(this->value);
 }
