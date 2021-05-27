@@ -11,5 +11,7 @@ struct CustomCharacter {
 };
 
 extern struct CustomCharacter millisecondCharacter;
+extern struct CustomCharacter leftArrowCharacter;
+extern struct CustomCharacter rightArrowCharacter;
 
 #endif

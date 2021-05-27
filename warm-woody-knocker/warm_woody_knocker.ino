@@ -19,8 +19,12 @@
 #include "src/Storage/Storage.h"
 
 
-#define LCD_LINE_WIDTH 16
+#define LCD_LINE_WIDTH 12
 #define LCD_LINES_COUNT 2
+#define ANIMATION_WIDTH 1
+#define ANIMATION_HEIGHT 2
+int const scrollSymbolWidth = 1;
+char emptyLine[LCD_LINE_WIDTH - ANIMATION_WIDTH];
 
 
 Animation *animation;
@@ -80,11 +84,14 @@ void printAccentValue(void);
 
 
 void setup() {
+	memset(emptyLine, (int)' ', LCD_LINE_WIDTH - ANIMATION_WIDTH);
 	lcd.createChar(millisecondCharacter.lcdAlias, millisecondCharacter.glyphData);
+	lcd.createChar(leftArrowCharacter.lcdAlias, leftArrowCharacter.glyphData);
+	lcd.createChar(rightArrowCharacter.lcdAlias, rightArrowCharacter.glyphData);
 	lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
 	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
 	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
-	animation = new Animation(&lcd, 0, 0, 2, 2);
+	animation = new Animation(&lcd, 0, 0, ANIMATION_WIDTH, ANIMATION_HEIGHT);
 	storage = new Storage();
 	setupPlayer();
 	setupRhythms();
@@ -162,7 +169,6 @@ void loop() {
 
 inline void printChanges(void) {
 	if (modeChanged || valueChanged) {
-		clearLine(1);
 		printMode();
 		printValue();
 		modeChanged = false;
@@ -171,9 +177,7 @@ inline void printChanges(void) {
 }
 
 void clearLine(uint8_t line) {
-	lcd.setCursor(0, line);
-	char emptyLine[LCD_LINE_WIDTH];
-	memset(emptyLine, (int)' ', LCD_LINE_WIDTH);
+	lcd.setCursor(ANIMATION_WIDTH, line);
 	lcd.write(emptyLine);
 }
 
@@ -187,15 +191,33 @@ Parameter *currentParameter() {
 }
 
 void printMode(void) {
+	clearLine(0);
 	String *title = currentParameter()->getTitle();
-	lcd.setCursor(0, 1);
+	lcd.setCursor(ANIMATION_WIDTH + scrollSymbolWidth, 0);
 	lcd.print(*title);
+	printScrollSymbol(0);
+}
+
+void printScrollSymbol(int activeLine) {
+	for (int line = 0; line < LCD_LINES_COUNT; line++) {
+		lcd.setCursor(ANIMATION_WIDTH, line);
+		for (int i = 0; i < scrollSymbolWidth; i++) {
+			char symbol = line == activeLine ? leftArrowCharacter.lcdAlias : ' ';
+			lcd.print(symbol);
+		}
+		lcd.setCursor(LCD_LINE_WIDTH - scrollSymbolWidth, line);
+		for (int i = 0; i < scrollSymbolWidth; i++) {
+			char symbol = line == activeLine ? rightArrowCharacter.lcdAlias : ' ';
+			lcd.print(symbol);
+		}
+	}
 }
 
 void printValue() {
+	clearLine(1);
 	String value = currentParameter()->printableValue();
 	value.replace(millisecondCharacter.stringAlias, millisecondCharacter.lcdAlias);
-	lcd.setCursor(LCD_LINE_WIDTH - value.length(), 1);
+	lcd.setCursor(ANIMATION_WIDTH + scrollSymbolWidth, 1);
 	lcd.print(value);
 }
 
