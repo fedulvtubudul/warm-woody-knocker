@@ -84,7 +84,7 @@ void setup() {
 	lcd.begin(LCD_LINE_WIDTH, LCD_LINES_COUNT);
 	button = new Button(buttonPin, buttonClickThreshold, &buttonClickAction, buttonHoldThreshold, &buttonHoldAction);
 	encoder = new Encoder(encoderPinA, encoderPinB, spinThreshold, &encoderSpinAction);
-	animation = new Animation(&lcd, 0, LCD_LINE_WIDTH);
+	animation = new Animation(&lcd, 0, 0, 2, 2);
 	storage = new Storage();
 	setupPlayer();
 	setupRhythms();

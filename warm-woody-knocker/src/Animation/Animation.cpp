@@ -3,11 +3,13 @@
 #include <LiquidCrystal.h>
 
 
-Animation::Animation(LiquidCrystal *lcd, int screenLine, int screenWidth):
+Animation::Animation(LiquidCrystal *lcd, int left, int top, int width, int height):
 	lcd(lcd),
 	currentState(0),
-	screenLine(screenLine),
-	screenWidth(screenWidth) {
+	left(left),
+	top(top),
+	width(width),
+	height(height) {
 
 	printState(currentState);
 }
@@ -18,25 +20,11 @@ void Animation::step() {
 }
 
 void Animation::printState(int state) {
-	lcd->setCursor(0, screenLine);
-	switch (state) {
-		case 0:
-			printFilledHalf();
-			printBlankHalf();
-		case 1:
-			printBlankHalf();
-			printFilledHalf();
-	}
-}
-
-void Animation::printBlankHalf() {
-	for (int i = 0; i < screenWidth / 2; ++i) {
-		lcd->print((char)32);
-	}
-}
-
-void Animation::printFilledHalf() {
-	for (int i = 0; i < screenWidth / 2; ++i) {
-		lcd->print((char)255);
+	char fillingChar = state ? 255 : 32;
+	for (int line = top; line < top + height; line++) {
+		lcd->setCursor(left, line);
+		for (int col = 0; col < width; col++) {
+				lcd->print(fillingChar);
+		}
 	}
 }

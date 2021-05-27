@@ -8,18 +8,19 @@ class LiquidCrystal;
 
 class Animation {
 	public:
-		Animation(LiquidCrystal *lcd, int screenLine, int screenWidth);
+		Animation(LiquidCrystal *lcd, int left, int top, int width, int height);
 		void step();
 		
 	private:
 		LiquidCrystal *lcd;
 		int currentState;
-		int screenLine;
-		int screenWidth;
+
+		int left;
+		int top;
+		int width;
+		int height;
 
 		void printState(int state);
-		void printBlankHalf();
-		void printFilledHalf();
 };
 
 #endif
