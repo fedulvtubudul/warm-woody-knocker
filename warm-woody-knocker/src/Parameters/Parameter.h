@@ -21,12 +21,13 @@ public:
 
 protected:
 
+	Storage *storage;
+	StoredParameter storedParameter;
+
 	virtual void notify();
 
 private :
-	
-	Storage *storage;
-	StoredParameter storedParameter;
+
 	String *title;
 	void (*onChange)(Parameter *sender);
 

@@ -1,11 +1,15 @@
 #include "TempoParameter.h"
 #include "../Time/TimeConversion.h"
 #include "../Display/CustomCharacters.h"
+#include "../Storage/Storage.h"
 
+
+int minTempo = 15;
+int maxTempo = 300;
 
 TempoParameter::TempoParameter(Storage *storage, void (*onChange)(TempoParameter *sender)) : 
-	IntegerParameter(new String("TEMPO"), storage, storedParameterTempo, 15, 300, 90, onChange) {
-	
+	IntegerParameter(new String("TEMPO"), storage, storedParameterTempo, minTempo, maxTempo, onChange) {
+
 	this->beatDuration = beatDurationFromBPM(this->value);
 }
 

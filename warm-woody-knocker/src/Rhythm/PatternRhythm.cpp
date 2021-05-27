@@ -98,8 +98,7 @@ EnumParameter *PatternRhythm::makePatternParameter() {
 			storage,
 			storedParameterMeter,
 			this->patternsCount,
-			values,
-			0
+			values
 		);
 
 	return parameter;

@@ -1,21 +1,28 @@
 #include "EnumParameter.h"
+#include "../Storage/Storage.h"
 
 
 EnumParameter::~EnumParameter() {
 	
 }
 
-EnumParameter::EnumParameter(String *title, Storage *storage, StoredParameter parameter, int valuesCount, String *valueTitles, int initialValue, void (*onChange)(EnumParameter *sender)) :
+EnumParameter::EnumParameter(String *title, Storage *storage, StoredParameter parameter, int valuesCount, String *valueTitles, void (*onChange)(EnumParameter *sender)) :
 	Parameter(title, storage, parameter, onChange),
 	valuesCount(valuesCount),
-	valueTitles(valueTitles),
-	value(initialValue) {
+	valueTitles(valueTitles) {
 	
+	int storedValue = 0;
+	storage->getValue<int>(parameter, storedValue);
+	storedValue = min(storedValue, valuesCount - 1);
+	storedValue = max(storedValue, 0);
+	value = storedValue;
 }
 
 void EnumParameter::stepBy(int stepValue) {
 	value += stepValue + valuesCount;
 	value %= valuesCount;
+
+	storage->setValue(storedParameter, value);
 
 	notify();
 }

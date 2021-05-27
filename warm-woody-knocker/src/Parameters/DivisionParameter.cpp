@@ -13,7 +13,6 @@ DivisionParameter::DivisionParameter(Storage *storage, void (*onChange)(Division
 		storedParameterDivision,
 		divisionModesCount,
 		new String[divisionModesCount],
-		divisionMode1to4,
 		onChange
 	) {
 	valueTitles[divisionMode1to4] = String("1/4");
