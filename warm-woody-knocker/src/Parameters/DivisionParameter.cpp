@@ -33,11 +33,3 @@ unsigned long DivisionParameter::subBeatDuration(unsigned long beatDuration) {
 
 	return beatDuration;
 }
-
-void DivisionParameter::stepBy(int stepValue) {
-	value += stepValue;
-	value = value > 0 ? value : 0;
-	value = value < divisionModesCount ? value : (divisionModesCount-1);
-
-	notify();
-}
