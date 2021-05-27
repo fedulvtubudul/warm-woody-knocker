@@ -86,8 +86,7 @@ IntegerParameter *LinearRhythm::makeMeasureLengthParameter() {
 			storage,
 			storedParameterMeter,
 			minMeterValue,
-			maxMeterValue,
-			defaultMeterValue
+			maxMeterValue
 		);
 
 	return parameter;

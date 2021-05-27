@@ -117,7 +117,7 @@ void setupGlobalParameters() {
 }
 
 RelativeParameter *makeVolumeParameter() {
-	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), storage, storedParameterVolume, 20, 6);
+	RelativeParameter *parameter = new RelativeParameter(new String("VOLUME"), storage, storedParameterVolume, 20);
 	return parameter;
 }
 
@@ -137,7 +137,6 @@ EnumParameter *makeRhythmParameter() {
 			storedParameterRhythm,
 			RHYTHMS_COUNT,
 			titles,
-			0,
 			onRhythmChange
 		);
 

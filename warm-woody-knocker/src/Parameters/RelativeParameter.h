@@ -13,7 +13,7 @@ class RelativeParameter : public IntegerParameter {
 
 public:
 
-	RelativeParameter(String *title, Storage *storage, StoredParameter parameter, int steps, int initialStep, void (*onChange)(RelativeParameter *sender) = nullptr);
+	RelativeParameter(String *title, Storage *storage, StoredParameter parameter, int steps, void (*onChange)(RelativeParameter *sender) = nullptr);
 	~RelativeParameter();
 
 	float relativeValue;
