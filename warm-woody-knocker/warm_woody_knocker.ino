@@ -103,9 +103,8 @@ void setupRhythms() {
 	rhythms[0] = new LinearRhythm(storage, player, tempoParameter, animation);
 	rhythms[1] = new PatternRhythm(storage, player, tempoParameter, animation);
 
-	currentRhythmIndex = 0;
-	
 	rhythmParameter = makeRhythmParameter();
+	currentRhythmIndex = rhythmParameter->getRawValue();
 }
 
 
