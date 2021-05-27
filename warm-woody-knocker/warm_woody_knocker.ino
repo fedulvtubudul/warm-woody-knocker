@@ -42,6 +42,7 @@ uint32_t const buttonHoldThreshold = 2000;
 #define RHYTHMS_COUNT 2
 Rhythm *rhythms[RHYTHMS_COUNT];
 int currentRhythmIndex;
+bool valueInFocus = false;
 
 #define BPM_TO_MICRO 60000000lu
 
@@ -171,6 +172,7 @@ inline void printChanges(void) {
 	if (modeChanged || valueChanged) {
 		printMode();
 		printValue();
+		printScrollSymbol(valueInFocus ? 1 : 0);
 		modeChanged = false;
 		valueChanged = false;
 	}
@@ -195,7 +197,6 @@ void printMode(void) {
 	String *title = currentParameter()->getTitle();
 	lcd.setCursor(ANIMATION_WIDTH + scrollSymbolWidth, 0);
 	lcd.print(*title);
-	printScrollSymbol(0);
 }
 
 void printScrollSymbol(int activeLine) {
@@ -222,10 +223,8 @@ void printValue() {
 }
 
 void buttonClickAction(void) {
-	int parametersCount = globalParametersCount + rhythms[currentRhythmIndex]->getParametersCount();
-	currentParameterIndex = (currentParameterIndex + 1) % parametersCount;
-
-	modeChanged = true;
+	valueInFocus = !valueInFocus;
+	printScrollSymbol(valueInFocus ? 1 : 0);
 }
 
 void buttonHoldAction(void) {
@@ -235,9 +234,14 @@ void buttonHoldAction(void) {
 }
 
 void encoderSpinAction(SpinDirection direction) {
-	int valueDelta = direction == spinDirectionCW ? 1 : -1;
-	currentParameter()->stepBy(valueDelta);
+	int delta = direction == spinDirectionCW ? 1 : -1;
 
-	valueChanged = true;
+	if (valueInFocus) {
+		currentParameter()->stepBy(delta);
+		valueChanged = true;
+	} else {
+		int parametersCount = globalParametersCount + rhythms[currentRhythmIndex]->getParametersCount();
+		currentParameterIndex = (currentParameterIndex + delta + parametersCount) % parametersCount;
+		modeChanged = true;
+	}
 }
-
