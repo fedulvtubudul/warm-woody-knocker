@@ -94,9 +94,9 @@ EnumParameter *PatternRhythm::makePatternParameter() {
 	}
 
 	EnumParameter *parameter = new EnumParameter(
-			new String("METER"),
+			new String("PATTERN"),
 			storage,
-			storedParameterMeter,
+			storedParameterPattern,
 			this->patternsCount,
 			values
 		);
