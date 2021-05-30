@@ -30,7 +30,7 @@ LinearRhythm::~LinearRhythm() {
 void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
 	this->meter = makeMeasureLengthParameter();
-	this->division = new DivisionParameter(nullptr);
+	this->division = new DivisionParameter(storage, nullptr);
 
 	this->parametersCount = 3;
 	this->parameters = new Parameter*[this->parametersCount];
