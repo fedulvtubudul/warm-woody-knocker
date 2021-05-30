@@ -208,6 +208,7 @@ void buttonClickAction(void) {
 
 void buttonHoldAction(void) {
 	running = !running;
+	storage->synchronize();
 	runningChanged = true;
 }
 
