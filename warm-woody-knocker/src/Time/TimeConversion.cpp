@@ -7,3 +7,7 @@
 unsigned long beatDurationFromBPM(int bpmTempo) {
 	return BPM_TO_MICRO / bpmTempo;
 }
+
+int bpmTempoFromBeatDuration(unsigned long beatDuration) {
+	return BPM_TO_MICRO / beatDuration;
+}

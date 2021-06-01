@@ -5,6 +5,7 @@
 
 
 unsigned long beatDurationFromBPM(int bpmTempo);
+int bpmTempoFromBeatDuration(unsigned long beatDuration);
 
 
 #endif
