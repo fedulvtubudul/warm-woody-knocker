@@ -14,12 +14,16 @@ static int const maxMeterValue = 16;
 static int const defaultMeterValue = 4;
 
 
-LinearRhythm::LinearRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation):
-	storage(storage),
+LinearRhythm::LinearRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter,
+	TapTempoFeature *tapTempoFeature, Animation *animation):
+
 	Rhythm(player),
+	tempo(tempoParameter),
+	tapTempo(tapTempoFeature),
+	storage(storage),
 	animation(animation) {
 
-	this->setupParameters(tempoParameter);
+	this->setupParameters();
 	this->resetState();
 }
 
@@ -27,8 +31,7 @@ LinearRhythm::~LinearRhythm() {
 
 }
 
-void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
-	this->tempo = tempoParameter;
+void LinearRhythm::setupParameters() {
 	this->meter = makeMeasureLengthParameter();
 	this->division = new DivisionParameter(storage, nullptr);
 
@@ -36,7 +39,7 @@ void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->parameters = new Parameter*[this->parametersCount];
 	this->parameters[0] = meter;
 	this->parameters[1] = division;
-	this->parameters[2] = tempoParameter;
+	this->parameters[2] = tempo;
 }
 
 String LinearRhythm::title() {

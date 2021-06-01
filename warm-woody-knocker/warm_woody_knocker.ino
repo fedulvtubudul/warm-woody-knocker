@@ -7,6 +7,7 @@
 #include "src/Parameters/Parameter.h"
 #include "src/Parameters/EnumParameter.h"
 #include "src/Parameters/TempoParameter.h"
+#include "src/Parameters/TapTempoFeature.h"
 #include "src/Parameters/RelativeParameter.h"
 
 #include "src/Rhythm/Rhythm.h"
@@ -67,6 +68,7 @@ int globalParametersCount;
 Parameter **globalParameters;
 EnumParameter *rhythmParameter;
 TempoParameter *tempoParameter;
+TapTempoFeature *tapTempoFeature;
 RelativeParameter *volumeParameter;
 int currentParameterIndex = 0;
 Parameter *currentParameter();
@@ -105,11 +107,12 @@ void setupPlayer() {
 }
 
 void setupRhythms() {
-	tempoParameter = makeTempoParameter();
+	tempoParameter = new TempoParameter(storage, onTempoChange);
+	tapTempoFeature = new TapTempoFeature(tempoParameter);
 	onTempoChange(tempoParameter);
 
-	rhythms[0] = new LinearRhythm(storage, player, tempoParameter, animation);
-	rhythms[1] = new PatternRhythm(storage, player, tempoParameter, animation);
+	rhythms[0] = new LinearRhythm(storage, player, tempoParameter, tapTempoFeature, animation);
+	rhythms[1] = new PatternRhythm(storage, player, tempoParameter, tapTempoFeature, animation);
 
 	rhythmParameter = makeRhythmParameter();
 	currentRhythmIndex = rhythmParameter->getRawValue();
@@ -151,11 +154,6 @@ EnumParameter *makeRhythmParameter() {
 }
 
 void onTempoChange(TempoParameter *sender) {
-}
-
-TempoParameter *makeTempoParameter() {
-	TempoParameter *parameter = new TempoParameter(storage, onTempoChange);
-	return parameter;
 }
 
 void loop() {

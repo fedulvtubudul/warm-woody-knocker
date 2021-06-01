@@ -6,6 +6,7 @@
 
 
 class TempoParameter;
+class TapTempoFeature;
 class DivisionParameter;
 class IntegerParameter;
 class EnumParameter;
@@ -22,16 +23,19 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	LinearRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation);
+	LinearRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter,
+		TapTempoFeature *tapTempoFeature, Animation *animation);
+
 	virtual ~LinearRhythm();
 
 private:
 
-	void setupParameters(TempoParameter *tempoParameter);
+	void setupParameters();
 	IntegerParameter *makeMeasureLengthParameter();
 
 	Storage *storage;
 	TempoParameter *tempo;
+	TapTempoFeature *tapTempo;
 	IntegerParameter *meter;
 	DivisionParameter *division;
 	Animation *animation;

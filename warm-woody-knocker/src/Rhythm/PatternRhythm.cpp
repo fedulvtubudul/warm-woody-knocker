@@ -1,6 +1,7 @@
 #include "PatternRhythm.h"
 
 #include "../Parameters/TempoParameter.h"
+#include "../Parameters/TapTempoFeature.h"
 #include "../Parameters/EnumParameter.h"
 
 #include "../Animation/Animation.h"
@@ -9,13 +10,17 @@
 #include "../Storage/StoredParameter.h"
 
 
-PatternRhythm::PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation):
-	storage(storage),
+PatternRhythm::PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter,
+	TapTempoFeature *tapTempoFeature, Animation *animation):
+
 	Rhythm(player),
+	storage(storage),
+	tempo(tempoParameter),
+	tapTempo(tapTempoFeature),
 	animation(animation) {
 
 	this->setupPatterns();
-	this->setupParameters(tempoParameter);
+	this->setupParameters();
 	this->resetState();
 }
 
@@ -34,15 +39,13 @@ void PatternRhythm::setupPatterns() {
 	patterns[5] = makeSwing4Pattern();
 }
 
-void PatternRhythm::setupParameters(TempoParameter *tempoParameter) {
-	this->tempo = tempoParameter;
-
+void PatternRhythm::setupParameters() {
 	this->patternParameter = this->makePatternParameter();
 
 	this->parametersCount = 2;
 	this->parameters = new Parameter*[this->parametersCount];
 	this->parameters[0] = this->patternParameter;
-	this->parameters[1] = tempoParameter;
+	this->parameters[1] = tempo;
 }
 
 String PatternRhythm::title() {

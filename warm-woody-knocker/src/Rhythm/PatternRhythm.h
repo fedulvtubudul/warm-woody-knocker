@@ -6,6 +6,7 @@
 
 
 class TempoParameter;
+class TapTempoFeature;
 class EnumParameter;
 class Player;
 class Animation;
@@ -21,15 +22,18 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation);
+	PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter,
+		TapTempoFeature *tapTempoFeature, Animation *animation);
+
 	virtual ~PatternRhythm();
 
 private:
 
 	TempoParameter *tempo;
+	TapTempoFeature *tapTempo;
 
 	void setupPatterns();
-	void setupParameters(TempoParameter *tempoParameter);
+	void setupParameters();
 	EnumParameter *makePatternParameter();
 
 	Storage *storage;
@@ -43,7 +47,6 @@ private:
 
 	int16_t patternsCount;
 	Pattern *patterns;
-
 };
 
 
