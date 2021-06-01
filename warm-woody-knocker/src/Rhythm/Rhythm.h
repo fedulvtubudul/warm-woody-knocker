@@ -6,6 +6,7 @@
 
 class Parameter;
 class Player;
+class Feature;
 
 
 class Rhythm {
@@ -16,18 +17,16 @@ public:
 	virtual void resetState() = 0;
 	virtual void check(unsigned long now);
 	
-	int getParametersCount();
-	Parameter *getParameter(int parameterIndex);
+	int getFeaturesCount();
+	Feature *getFeature(int index);
 
 	Rhythm(Player *player);
 	virtual ~Rhythm();
 
 protected:
-
-	int parametersCount;
-	Parameter **parameters;
+	int featuresCount;
+	Feature **features;
 	Player *player;
-
 };
 
 

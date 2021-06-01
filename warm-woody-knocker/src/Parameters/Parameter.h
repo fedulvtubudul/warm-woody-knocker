@@ -16,13 +16,13 @@ public:
 	virtual ~Parameter();
 	Parameter(String *title, Storage *storage, StoredParameter parameter, void (*onChange)(Parameter *sender) = nullptr);
 
-	virtual void stepBy(int stepValue) = 0;
-
 protected:
 
 	Storage *storage;
 	StoredParameter storedParameter;
-
+	
+	virtual bool canFocus();
+	virtual void tap();
 	virtual void notify();
 
 private :

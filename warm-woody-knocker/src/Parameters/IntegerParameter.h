@@ -17,7 +17,7 @@ public:
 	~IntegerParameter();
 	
 	int getValue();
-	virtual void stepBy(int stepValue);
+	virtual void scroll(int stepValue);
 	virtual String printableValue();
 
 protected:

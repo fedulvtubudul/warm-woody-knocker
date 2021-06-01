@@ -11,5 +11,15 @@ String TapTempoFeature::printableValue() {
 	return tempoParameter->printableValue();
 }
 
+bool TapTempoFeature::canFocus() {
+	return false;
+}
+
+void TapTempoFeature::tap() {
+}
+
+void TapTempoFeature::scroll(int stepValue) {
+}
+
 TapTempoFeature::~TapTempoFeature() {	
 }

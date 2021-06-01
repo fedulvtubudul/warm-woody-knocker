@@ -1,5 +1,7 @@
 #include "LinearRhythm.h"
 
+#include "../Parameters/Feature.h"
+#include "../Parameters/TapTempoFeature.h"
 #include "../Parameters/IntegerParameter.h"
 #include "../Parameters/TempoParameter.h"
 #include "../Parameters/DivisionParameter.h"
@@ -35,11 +37,12 @@ void LinearRhythm::setupParameters() {
 	this->meter = makeMeasureLengthParameter();
 	this->division = new DivisionParameter(storage, nullptr);
 
-	this->parametersCount = 3;
-	this->parameters = new Parameter*[this->parametersCount];
-	this->parameters[0] = meter;
-	this->parameters[1] = division;
-	this->parameters[2] = tempo;
+	featuresCount = 4;
+	features = new Feature*[this->featuresCount];
+	features[0] = meter;
+	features[1] = division;
+	features[2] = tempo;
+	features[3] = tapTempo;
 }
 
 String LinearRhythm::title() {

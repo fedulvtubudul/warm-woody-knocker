@@ -1,4 +1,5 @@
 #include "Rhythm.h"
+#include "../Parameters/Feature.h"
 #include "../Parameters/Parameter.h"
 
 
@@ -11,10 +12,10 @@ Rhythm::~Rhythm() {
 
 }
 
-int Rhythm::getParametersCount(void) {
-	return this->parametersCount;
+int Rhythm::getFeaturesCount(void) {
+	return featuresCount;
 }
 
-Parameter * Rhythm::getParameter(int parameterIndex) {
-	return parameters[parameterIndex];
+Feature * Rhythm::getFeature(int index) {
+	return features[index];
 }

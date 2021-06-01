@@ -18,7 +18,7 @@ IntegerParameter::IntegerParameter(String *title, Storage *storage, StoredParame
 	value = storedValue;
 }
 
-void IntegerParameter::stepBy(int stepValue) {
+void IntegerParameter::scroll(int stepValue) {
 	value += stepValue;
 	value = value > minValue ? value : minValue;
 	value = value < maxValue ? value : maxValue;

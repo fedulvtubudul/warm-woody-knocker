@@ -70,8 +70,8 @@ EnumParameter *rhythmParameter;
 TempoParameter *tempoParameter;
 TapTempoFeature *tapTempoFeature;
 RelativeParameter *volumeParameter;
-int currentParameterIndex = 0;
-Parameter *currentParameter();
+int currentFeatureIndex = 0;
+Feature *currentFeature();
 
 Player *player;
 
@@ -181,18 +181,18 @@ void clearLine(uint8_t line) {
 	lcd.write(emptyLine);
 }
 
-Parameter *currentParameter() {
-	if (currentParameterIndex < globalParametersCount) {
-		return globalParameters[currentParameterIndex];
+Feature *currentFeature() {
+	if (currentFeatureIndex < globalParametersCount) {
+		return globalParameters[currentFeatureIndex];
 	} else {
-		int rhythmParameterIndex = currentParameterIndex - globalParametersCount;
-		return rhythms[currentRhythmIndex]->getParameter(rhythmParameterIndex);
+		int rhythmParameterIndex = currentFeatureIndex - globalParametersCount;
+		return rhythms[currentRhythmIndex]->getFeature(rhythmParameterIndex);
 	}
 }
 
 void printMode(void) {
 	clearLine(0);
-	String *title = currentParameter()->getTitle();
+	String *title = currentFeature()->getTitle();
 	lcd.setCursor(ANIMATION_WIDTH + scrollSymbolWidth, 0);
 	lcd.print(*title);
 }
@@ -214,15 +214,19 @@ void printScrollSymbol(int activeLine) {
 
 void printValue() {
 	clearLine(1);
-	String value = currentParameter()->printableValue();
+	String value = currentFeature()->printableValue();
 	value.replace(millisecondCharacter.stringAlias, millisecondCharacter.lcdAlias);
 	lcd.setCursor(ANIMATION_WIDTH + scrollSymbolWidth, 1);
 	lcd.print(value);
 }
 
 void buttonClickAction(void) {
-	valueInFocus = !valueInFocus;
-	printScrollSymbol(valueInFocus ? 1 : 0);
+	if (currentFeature()->canFocus()) {
+		valueInFocus = !valueInFocus;
+		printScrollSymbol(valueInFocus ? 1 : 0);
+	} else {
+		currentFeature()->tap();
+	}
 }
 
 void buttonHoldAction(void) {
@@ -235,11 +239,11 @@ void encoderSpinAction(SpinDirection direction) {
 	int delta = direction == spinDirectionCW ? 1 : -1;
 
 	if (valueInFocus) {
-		currentParameter()->stepBy(delta);
+		currentFeature()->scroll(delta);
 		valueChanged = true;
 	} else {
-		int parametersCount = globalParametersCount + rhythms[currentRhythmIndex]->getParametersCount();
-		currentParameterIndex = (currentParameterIndex + delta + parametersCount) % parametersCount;
+		int parametersCount = globalParametersCount + rhythms[currentRhythmIndex]->getFeaturesCount();
+		currentFeatureIndex = (currentFeatureIndex + delta + parametersCount) % parametersCount;
 		modeChanged = true;
 	}
 }

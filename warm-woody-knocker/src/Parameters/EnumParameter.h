@@ -16,7 +16,7 @@ public:
 	EnumParameter(String *title, Storage *storage, StoredParameter parameter, int valuesCount, String *valueTitles, void (*onChange)(EnumParameter *sender) = nullptr);
 	~EnumParameter();
 	
-	virtual void stepBy(int stepValue);
+	virtual void scroll(int stepValue);
 	virtual int getRawValue();
 	virtual String printableValue();
 

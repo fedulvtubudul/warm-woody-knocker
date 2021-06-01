@@ -11,9 +11,14 @@ Parameter::Parameter(String *title, Storage *storage, StoredParameter parameter,
 	this->onChange = onChange;
 }
 
+Parameter::~Parameter() {	
+}
 
-Parameter::~Parameter() {
-	
+bool Parameter::canFocus() {
+	return true;
+}
+
+void Parameter::tap() {
 }
 
 void Parameter::notify() {

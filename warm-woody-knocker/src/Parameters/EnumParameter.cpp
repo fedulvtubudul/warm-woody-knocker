@@ -18,7 +18,7 @@ EnumParameter::EnumParameter(String *title, Storage *storage, StoredParameter pa
 	value = storedValue;
 }
 
-void EnumParameter::stepBy(int stepValue) {
+void EnumParameter::scroll(int stepValue) {
 	value += stepValue + valuesCount;
 	value %= valuesCount;
 

@@ -42,10 +42,11 @@ void PatternRhythm::setupPatterns() {
 void PatternRhythm::setupParameters() {
 	this->patternParameter = this->makePatternParameter();
 
-	this->parametersCount = 2;
-	this->parameters = new Parameter*[this->parametersCount];
-	this->parameters[0] = this->patternParameter;
-	this->parameters[1] = tempo;
+	featuresCount = 3;
+	features = new Parameter*[this->featuresCount];
+	features[0] = this->patternParameter;
+	features[1] = tempo;
+	features[2] = tapTempo;
 }
 
 String PatternRhythm::title() {

@@ -14,6 +14,9 @@ public:
 	virtual ~TapTempoFeature();
 
 	virtual String printableValue();
+	virtual bool canFocus();
+	virtual void tap();
+	virtual void scroll(int stepValue);
 
 private:
 	TempoParameter *tempoParameter;

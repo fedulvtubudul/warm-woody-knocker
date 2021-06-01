@@ -11,6 +11,9 @@ public:
 
 	virtual String *getTitle();
 	virtual String printableValue() = 0;
+	virtual bool canFocus() = 0;
+	virtual void tap() = 0;
+	virtual void scroll(int stepValue) = 0;
 
 private:
 	String *title;
