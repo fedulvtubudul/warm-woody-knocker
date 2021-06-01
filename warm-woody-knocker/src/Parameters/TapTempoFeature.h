@@ -19,7 +19,9 @@ public:
 	virtual void scroll(int stepValue);
 
 private:
-	TempoParameter *tempoParameter;
+	TempoParameter *tempo;
+	unsigned long maxPeriod;
+	unsigned long previousTap;
 };
 
 #endif

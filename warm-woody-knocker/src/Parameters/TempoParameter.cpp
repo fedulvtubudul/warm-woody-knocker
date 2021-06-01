@@ -4,10 +4,9 @@
 #include "../Storage/Storage.h"
 
 
-int minTempo = 15;
-int maxTempo = 300;
-
-TempoParameter::TempoParameter(Storage *storage, void (*onChange)(TempoParameter *sender)) : 
+TempoParameter::TempoParameter(Storage *storage, void (*onChange)(TempoParameter *sender)) :
+	minTempo(15),
+	maxTempo(300),
 	IntegerParameter(new String("TEMPO"), storage, storedParameterTempo, minTempo, maxTempo, onChange) {
 
 	this->beatDuration = beatDurationFromBPM(this->value);
@@ -22,6 +21,14 @@ void TempoParameter::notify() {
 String TempoParameter::printableValue() {
 	float msValue = 60000.0f / float(value);
 	return String(value) + String("/") + String(msValue, 1) + String(millisecondCharacter.stringAlias);
+}
+
+void TempoParameter::setTempoWithBeatDuration(unsigned long beatDuration) {
+	int tempo = bpmTempoFromBeatDuration(beatDuration);
+	if (tempo >= minTempo && tempo <= maxTempo) {
+		value = tempo;
+		notify();
+	}
 }
 
 TempoParameter::~TempoParameter() {	

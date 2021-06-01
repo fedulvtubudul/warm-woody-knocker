@@ -16,7 +16,10 @@ public:
 	~TempoParameter();
 
 	virtual String printableValue();
+	void setTempoWithBeatDuration(unsigned long beatDuration);
 
+	int minTempo;
+	int maxTempo;
 	unsigned long beatDuration;
 
 protected:

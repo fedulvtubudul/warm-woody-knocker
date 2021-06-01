@@ -154,6 +154,7 @@ EnumParameter *makeRhythmParameter() {
 }
 
 void onTempoChange(TempoParameter *sender) {
+	valueChanged = true;
 }
 
 void loop() {
