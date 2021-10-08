@@ -14,6 +14,8 @@
 
 * Volume adjustment (TODO: wiki page). Level range is quite wide in theory, but not the whole range gives stable result, because of mechanics instability.
 
+* Restoring last used settings
+
 ## Usage
 
 There is a cycled list of parameters which can be toggled with button press. This list looks flat from user's perspective, but actually some parameters are global, and some are rhytms-specific.
@@ -98,16 +100,16 @@ Electromagnetic actuators (push type) are pointed to one of the box walls. Havin
 
 ## Road map
 
-* Better support for battery powered hardware
+* [ ] Better support for battery powered hardware
 
-* Restoring last used settings
+* [x] Restoring last used settings
 
-* Tap tempo / tempo synchronization
+* [ ] Tap tempo / tempo synchronization
 
-* Patterns recording
+* [ ] Patterns recording
 
-* Adjustable swing factor
+* [ ] Adjustable swing factor
 
-* Better animations without compromising playback accuracy
+* [ ] Better animations without compromising playback accuracy
 
-* Support graphical displays
+* [ ] Support graphical displays
