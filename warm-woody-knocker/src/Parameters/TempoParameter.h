@@ -12,6 +12,8 @@ public:
 	TempoParameter(void (*onChange)(TempoParameter *sender) = nullptr);
 	~TempoParameter();
 
+	virtual String printableValue();
+
 	unsigned long beatDuration;
 
 protected:
