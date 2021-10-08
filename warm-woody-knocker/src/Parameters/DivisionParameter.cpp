@@ -6,12 +6,13 @@ DivisionParameter::~DivisionParameter() {
 	
 }
 
-DivisionParameter::DivisionParameter(void (*onChange)(DivisionParameter *sender)) :
+DivisionParameter::DivisionParameter(Storage *storage, void (*onChange)(DivisionParameter *sender)) :
 	EnumParameter(
 		new String("DIVISION"),
+		storage,
+		storedParameterDivision,
 		divisionModesCount,
 		new String[divisionModesCount],
-		divisionMode1to4,
 		onChange
 	) {
 	valueTitles[divisionMode1to4] = String("1/4");
@@ -30,12 +31,4 @@ unsigned long DivisionParameter::subBeatDuration(unsigned long beatDuration) {
 	}
 
 	return beatDuration;
-}
-
-void DivisionParameter::stepBy(int stepValue) {
-	value += stepValue;
-	value = value > 0 ? value : 0;
-	value = value < divisionModesCount ? value : (divisionModesCount-1);
-
-	notify();
 }

@@ -3,13 +3,17 @@
 
 #include "Arduino.h"
 #include "Parameter.h"
+#include "../Storage/StoredParameter.h"
+
+
+class Storage;
 
 
 class EnumParameter : public Parameter {
 
 public:
 
-	EnumParameter(String *title, int valuesCount, String *valueTitles, int initialValue, void (*onChange)(EnumParameter *sender) = nullptr);
+	EnumParameter(String *title, Storage *storage, StoredParameter parameter, int valuesCount, String *valueTitles, void (*onChange)(EnumParameter *sender) = nullptr);
 	~EnumParameter();
 	
 	virtual void stepBy(int stepValue);

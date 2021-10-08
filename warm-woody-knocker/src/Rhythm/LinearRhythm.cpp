@@ -6,6 +6,7 @@
 
 #include "../Player/Player.h"
 #include "../Animation/Animation.h"
+#include "../Storage/StoredParameter.h"
 
 
 static int const minMeterValue = 0;
@@ -13,7 +14,8 @@ static int const maxMeterValue = 16;
 static int const defaultMeterValue = 4;
 
 
-LinearRhythm::LinearRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation):
+LinearRhythm::LinearRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation):
+	storage(storage),
 	Rhythm(player),
 	animation(animation) {
 
@@ -28,7 +30,7 @@ LinearRhythm::~LinearRhythm() {
 void LinearRhythm::setupParameters(TempoParameter *tempoParameter) {
 	this->tempo = tempoParameter;
 	this->meter = makeMeasureLengthParameter();
-	this->division = new DivisionParameter(nullptr);
+	this->division = new DivisionParameter(storage, nullptr);
 
 	this->parametersCount = 3;
 	this->parameters = new Parameter*[this->parametersCount];
@@ -81,9 +83,10 @@ void LinearRhythm::check(unsigned long now) {
 IntegerParameter *LinearRhythm::makeMeasureLengthParameter() {
 	IntegerParameter *parameter = new IntegerParameter(
 			new String("METER"),
+			storage,
+			storedParameterMeter,
 			minMeterValue,
-			maxMeterValue,
-			defaultMeterValue
+			maxMeterValue
 		);
 
 	return parameter;

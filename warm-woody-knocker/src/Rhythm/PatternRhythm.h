@@ -10,6 +10,7 @@ class EnumParameter;
 class Player;
 class Animation;
 struct Pattern;
+class Storage;
 
 
 class PatternRhythm: public Rhythm {
@@ -20,7 +21,7 @@ public:
 	virtual void resetState();
 	virtual void check(unsigned long now);
 
-	PatternRhythm(Player *player, TempoParameter *tempoParameter, Animation *animation);
+	PatternRhythm(Storage *storage, Player *player, TempoParameter *tempoParameter, Animation *animation);
 	virtual ~PatternRhythm();
 
 private:
@@ -31,6 +32,7 @@ private:
 	void setupParameters(TempoParameter *tempoParameter);
 	EnumParameter *makePatternParameter();
 
+	Storage *storage;
 	EnumParameter *patternParameter;
 	Animation *animation;
 
